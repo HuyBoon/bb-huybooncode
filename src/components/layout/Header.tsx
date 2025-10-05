@@ -8,11 +8,11 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Github, Linkedin } from "lucide-react";
 
 const navItems = [
-	{ name: "About", href: "/#about" },
-	{ name: "Skills", href: "/#skills" },
-	{ name: "Projects", href: "/#projects" },
-	{ name: "Experiences", href: "/#experience" },
-	{ name: "Contact", href: "/#contact" },
+	{ name: "About", href: "/portfolio/#about" },
+	{ name: "Skills", href: "/portfolio/#skills" },
+	{ name: "Projects", href: "/portfolio/#projects" },
+	{ name: "Experiences", href: "/portfolio/#experience" },
+	{ name: "Contact", href: "/portfolio/#contact" },
 ];
 
 const socialLinks = {

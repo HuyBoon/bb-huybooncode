@@ -1,10 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useLocale } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt } from "react-icons/fa";
@@ -63,6 +61,42 @@ const projects = [
 		demoLink: "https://hb-variahotel.vercel.app/vi",
 		status: "In Progress",
 	},
+	{
+		title: "E-commerce Website",
+		description:
+			"An online store featuring product management, shopping cart, and user authentication, built with Next.js and TypeScript.",
+		tech: ["React", "Next.js", "Tailwind"],
+		image: "/projects/ecommerce.png",
+		demoLink: "https://kimvinhstore.vercel.app/",
+		status: "Completed",
+	},
+	{
+		title: "Phú Quốc's Travel Website",
+		description:
+			"A travel website showcasing destinations, tours, and travel guides for Phú Quốc with a user-friendly interface.",
+		tech: ["TypeScript", "Node.js", "Tailwind"],
+		image: "/projects/tour.png",
+		demoLink: "https://hiddensunphuquoc.vercel.app/",
+		status: "Completed",
+	},
+	{
+		title: "Blog Platform",
+		description:
+			"A blogging platform where users can read, write, and manage blog posts, with support for multilingual content.",
+		tech: ["React", "Firebase", "Tailwind"],
+		image: "/projects/blog.png",
+		demoLink: "https://mereview.vercel.app/vi",
+		status: "Completed",
+	},
+	{
+		title: "Kyles Skincare",
+		description:
+			"A landing page for a skincare brand designed to showcase products, introduce the brand story, and collect customer leads through a contact form. The website is responsive and optimized for marketing campaigns.",
+		tech: ["React", "Next.js", "TypeScript", "Tailwind"],
+		image: "/projects/landing.png",
+		demoLink: "https://kyleskincare.vn/",
+		status: "Completed",
+	},
 ];
 
 const containerVariants = {
@@ -89,9 +123,7 @@ const cardVariants = {
 	},
 };
 
-export default function Projects() {
-	const locale = useLocale();
-	const router = useRouter();
+export default function ProjectPage() {
 	const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
 	const handleMouseEnter = (index: number) => {
@@ -109,12 +141,8 @@ export default function Projects() {
 		}
 	};
 
-	const handleToProject = () => {
-		router.push(`/${locale}/projects`);
-	};
-
 	return (
-		<section className="relative">
+		<section className="relative  ">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 xl:px-24">
 				<motion.div
 					variants={containerVariants}
@@ -211,7 +239,7 @@ export default function Projects() {
 					))}
 				</div>
 
-				<motion.div
+				{/* <motion.div
 					variants={containerVariants}
 					initial="hidden"
 					whileInView="visible"
@@ -222,11 +250,10 @@ export default function Projects() {
 					<button
 						className="cursor-pointer relative px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-[#7c3aed] text-white font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all"
 						aria-label="View all projects"
-						onClick={() => handleToProject()}
 					>
 						<span className="relative z-10">View All Projects</span>
 					</button>
-				</motion.div>
+				</motion.div> */}
 			</div>
 		</section>
 	);

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const Footer = () => {
 	return (
-		<footer className="bg-primary py-4 text-center text-white border-t border-white/10">
+		<footer className="bg-gray-900  py-4 text-center text-white border-t border-white/10">
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}

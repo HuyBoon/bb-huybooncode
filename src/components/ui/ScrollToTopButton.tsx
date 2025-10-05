@@ -42,7 +42,7 @@ const ScrollToTopButton: React.FC = () => {
 	return (
 		<>
 			<button
-				className={`fixed bottom-5 right-5 z-[1000] p-2 rounded-full bg-[#c66423] text-black shadow-md transition-opacity duration-300 flex items-center justify-center cursor-pointer ${
+				className={`fixed bottom-5 right-5 z-[1000] p-2 rounded-full bg-[#5ec4e1] text-black shadow-md transition-opacity duration-300 flex items-center justify-center cursor-pointer ${
 					isVisible ? "opacity-100" : "opacity-0"
 				}`}
 				onClick={scrollToTop}

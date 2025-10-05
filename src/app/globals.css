@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 :root {
 	--white-color: #fff;
 	--black-color: #000;
@@ -46,13 +46,15 @@
 	--color-header-dark: rgba(0, 0, 0, 0.8);
 }
 
-body {
-	margin: 0;
-	padding: 0;
-	color: var(--title-color);
-	font-size: 16px;
-	font-weight: 400;
-	line-height: 30px;
+@layer base {
+	body {
+		margin: 0;
+		padding: 0;
+		color: var(--title-color);
+		font-size: 16px;
+		font-weight: 400;
+		line-height: 30px;
+	}
 }
 
 .line-clamp-2 {
