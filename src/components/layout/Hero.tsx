@@ -1,5 +1,5 @@
 "use client";
-import { ParticleCanvas } from "@/hooks/particle";
+
 import { motion, useScroll, useTransform } from "framer-motion";
 import { IoMdDownload } from "react-icons/io";
 import Image from "next/image";
@@ -10,10 +10,10 @@ export default function Hero() {
 
 	return (
 		<section className="relative  overflow-hidden py-12 md:py-8">
-			{/* <ParticleCanvas /> */}
+			
 			<div className="max-w-7xl mx-auto px-12 xl:px-24 pt-24 md:pt32">
 				<div className="flex flex-col md:flex-row items-center gap-16">
-					{/* Text content */}
+				
 					<motion.div
 						initial={{ opacity: 0, x: -50 }}
 						animate={{ opacity: 1, x: 0 }}
