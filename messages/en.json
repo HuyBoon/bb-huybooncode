@@ -15,7 +15,8 @@
 			"role_prefix": "Frontend",
 			"role_suffix": "Developer",
 			"description": "I specialize in building modern, responsive websites using React, Next.js, and Tailwind CSS. Passionate about UI/UX and creating seamless user experiences.",
-			"download_cv": "Download CV"
+			"hire_me": "Hire Me",
+			"my_cv": "My CV"
 		},
 		"About": {
 			"title": "About",

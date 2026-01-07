@@ -122,7 +122,7 @@ export default function Projects() {
                     </motion.h2>
                     <motion.div
                         variants={itemVariants}
-                        className="w-24 h-1.5 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto opacity-80"
+                        className="w-24 h-1.5 bg-linear-to-r from-primary to-secondary rounded-full mx-auto opacity-80"
                     />
                     <motion.p
                         variants={itemVariants}
@@ -155,7 +155,7 @@ export default function Projects() {
                                         activeIndex === index
                                             ? "after:animate-[shineEffect_1s_ease-out_forwards]"
                                             : ""
-                                    } after:absolute after:content-[''] after:left-1/2 after:top-1/2 after:w-[200%] after:h-0 after:translate-x-[-50%] after:translate-y-[-50%] after:rotate-[-45deg] after:bg-white/30 after:z-10`}
+                                    } after:absolute after:content-[''] after:left-1/2 after:top-1/2 after:w-[200%] after:h-0 after:translate-x-[-50%] after:translate-y-[-50%] after:-rotate-45 after:bg-white/30 after:z-10`}
                                 />
 
                                 <Image
@@ -166,7 +166,7 @@ export default function Projects() {
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                 />
                                 {/* Overlay Gradient nhẹ khi hover để tăng độ sâu */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                                 {/* Status Badge */}
                                 <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-background/90 backdrop-blur-md text-foreground shadow-sm border border-border">
@@ -175,12 +175,12 @@ export default function Projects() {
                             </div>
 
                             {/* Content Section */}
-                            <div className="p-6 flex flex-col flex-grow">
+                            <div className="p-6 flex flex-col grow">
                                 <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
                                     {project.title}
                                 </h3>
 
-                                <p className="text-sm text-muted-foreground mb-6 line-clamp-3 flex-grow leading-relaxed">
+                                <p className="text-sm text-muted-foreground mb-6 line-clamp-3 grow leading-relaxed">
                                     {project.description}
                                 </p>
 

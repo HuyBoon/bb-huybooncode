@@ -2,7 +2,9 @@
 import { useTranslations } from "next-intl";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { IoMdDownload } from "react-icons/io";
+import { HiOutlineMail } from "react-icons/hi";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
     const { scrollY } = useScroll();
@@ -23,7 +25,7 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.5 }}
-                            className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight"
+                            className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight text-center md:text-left"
                         >
                             Frontend
                             <br />
@@ -31,7 +33,6 @@ export default function Hero() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.8 }}
-                                // SỬA: Gradient: Light mode dùng màu đậm (blue-600), Dark mode dùng màu sáng (white)
                                 className="bg-gradient-to-r from-primary via-blue-600 dark:via-white to-primary bg-clip-text text-transparent"
                             >
                                 Developer
@@ -42,33 +43,47 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 1.1 }}
-                            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-lg"
+                            className="text-lg md:text-xl text-muted-foreground mb-10 max-w-lg text-center md:text-left"
                         >
                             {t("description")}
                         </motion.p>
 
-                        <div className="flex gap-4">
-                            <motion.a
-                                href="/HuyBoon's CV.pdf" // Đảm bảo file này nằm trong folder public
-                                download="HuyBoon_CV"
+                        <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                            <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 1.2 }}
-                                whileHover={{
-                                    scale: 1.05,
-                                    transition: { duration: 0.2 },
-                                }}
-                                className="relative overflow-hidden px-6 py-3 rounded-full 
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <Link
+                                    href="/contact"
+                                    className="px-8 py-3.5 rounded-full bg-primary text-white font-bold text-sm md:text-base 
+                                        shadow-lg shadow-primary/25 hover:shadow-primary/40 flex items-center gap-2 transition-all"
+                                >
+                                    <HiOutlineMail className="w-5 h-5" />
+                                    <span>{t("hire_me")}</span>
+                                </Link>
+                            </motion.div>
+
+                            {/* --- NÚT MY CV (Thanh lịch) --- */}
+                            <motion.a
+                                href="/HuyBoon's CV.pdf"
+                                download="HuyBoon_CV"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 1.3 }}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="relative overflow-hidden px-8 py-3.5 rounded-full 
                                     bg-white border border-gray-200 text-gray-900 shadow-sm
-                                    dark:bg-white/10 dark:border-white/10 dark:text-white dark:shadow-none
+                                    dark:bg-white/5 dark:border-white/10 dark:text-white dark:shadow-none
                                     hover:border-primary dark:hover:border-primary transition-all group cursor-pointer"
                             >
                                 <div className="flex items-center justify-center gap-2 text-sm md:text-base font-medium group-hover:text-primary transition-colors">
                                     <IoMdDownload className="w-5 h-5" />
-                                    <span>My CV</span>
+                                    <span>{t("my_cv")}</span>
                                 </div>
-
-                                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             </motion.a>
                         </div>
                     </motion.div>
@@ -105,7 +120,6 @@ export default function Hero() {
                                         className="object-cover scale-105 group-hover:scale-100 transition-transform duration-700 ease-in-out"
                                         priority
                                     />
-
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 dark:opacity-100 transition-opacity" />
                                 </div>
                             </div>

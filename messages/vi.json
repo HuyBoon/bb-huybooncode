@@ -15,7 +15,8 @@
 			"role_prefix": "Lập Trình Viên",
 			"role_suffix": "Frontend",
 			"description": "Tôi chuyên xây dựng các website hiện đại, chuẩn SEO và tối ưu trải nghiệm người dùng bằng React, Next.js và Tailwind CSS.",
-			"download_cv": "Tải CV của tôi"
+			"hire_me": "Liên hệ ngay",
+			"my_cv": "Tải CV của tôi"
 		},
 		"About": {
 			"title": "About",
