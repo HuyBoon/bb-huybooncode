@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useState } from "react"; // Import useState
+import { useState } from "react";
 import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt } from "react-icons/fa";
 import {
     SiFirebase,
@@ -15,7 +15,6 @@ import {
 } from "react-icons/si";
 import { ExternalLink, ArrowRight } from "lucide-react";
 
-// Map icon công nghệ (Giữ nguyên)
 const techIcons: Record<string, React.ReactNode> = {
     React: <FaReact className="w-4 h-4 text-[#61DAFB]" />,
     "Next.js": <SiNextdotjs className="w-4 h-4 text-black dark:text-white" />,
@@ -44,7 +43,7 @@ const itemVariants = {
 export default function Projects() {
     const t = useTranslations("HomePage.Projects");
     const router = useRouter();
-    // State để điều khiển hiệu ứng Shine
+
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     const projects = [
@@ -88,7 +87,7 @@ export default function Projects() {
 
     const handleMouseEnter = (index: number) => {
         setActiveIndex(index);
-        // Logic cho mobile (Giữ nguyên từ code cũ của bạn)
+
         if (typeof window !== "undefined" && window.innerWidth <= 768) {
             setTimeout(() => {
                 setActiveIndex(null);
@@ -105,7 +104,6 @@ export default function Projects() {
     return (
         <section className="relative py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 xl:px-24">
-                {/* --- HEADER --- */}
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
@@ -132,7 +130,6 @@ export default function Projects() {
                     </motion.p>
                 </motion.div>
 
-                {/* --- PROJECTS GRID --- */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                     {projects.map((project, index) => (
                         <motion.div
@@ -141,15 +138,12 @@ export default function Projects() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            // Thêm các event handler để kích hoạt hiệu ứng
                             onMouseEnter={() => handleMouseEnter(index)}
                             onMouseLeave={handleMouseLeave}
-                            onClick={() => handleMouseEnter(index)} // Hỗ trợ mobile
+                            onClick={() => handleMouseEnter(index)}
                             className="group relative rounded-2xl overflow-hidden bg-card border border-border hover:border-primary/50 hover:shadow-xl transition-all duration-300 flex flex-col h-full cursor-pointer"
                         >
-                            {/* Image Section */}
                             <div className="relative aspect-video overflow-hidden">
-                                {/* --- SHINE EFFECT CŨ ĐÃ ĐƯỢC KHÔI PHỤC --- */}
                                 <div
                                     className={`absolute inset-0 pointer-events-none z-10 ${
                                         activeIndex === index
@@ -165,16 +159,14 @@ export default function Projects() {
                                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                 />
-                                {/* Overlay Gradient nhẹ khi hover để tăng độ sâu */}
+
                                 <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                                {/* Status Badge */}
                                 <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-background/90 backdrop-blur-md text-foreground shadow-sm border border-border">
                                     {t(`status.${project.status}`)}
                                 </div>
                             </div>
 
-                            {/* Content Section */}
                             <div className="p-6 flex flex-col grow">
                                 <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors flex items-center gap-2">
                                     {project.title}
@@ -184,7 +176,6 @@ export default function Projects() {
                                     {project.description}
                                 </p>
 
-                                {/* Footer: Tech Stack + Button */}
                                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mt-auto border-t border-border pt-4">
                                     <div className="flex flex-wrap gap-2">
                                         {project.tech.map((tech, i) => (
@@ -199,11 +190,9 @@ export default function Projects() {
                                         ))}
                                     </div>
 
-                                    {/* Nút View Demo chỉ là link ngoài, không cần onClick của card */}
                                     <Link
                                         href={project.demoLink}
                                         target="_blank"
-                                        // Dừng nổi bọt sự kiện để không kích hoạt lại Shine Effect khi bấm vào nút
                                         onClick={(e) => e.stopPropagation()}
                                         className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all shadow-md shadow-primary/20 whitespace-nowrap"
                                     >

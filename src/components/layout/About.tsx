@@ -126,7 +126,7 @@ const About = () => {
                                             <CheckCircle2 size={20} />
                                         </div>
                                         <h3 className="text-2xl font-bold text-foreground">
-                                            8+
+                                            5+
                                         </h3>
                                     </div>
                                     <p className="text-sm font-medium text-muted-foreground group-hover:text-secondary transition-colors">

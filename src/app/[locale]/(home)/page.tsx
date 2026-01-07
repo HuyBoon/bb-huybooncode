@@ -46,7 +46,6 @@ export default function HomePage() {
     return (
         <section className="min-h-screen py-12 px-4 sm:px-6 lg:px-12 flex flex-col justify-center">
             <div className="max-w-6xl mx-auto w-full">
-                {/* --- HEADER: INTRO --- */}
                 <div className="mb-12">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
@@ -86,20 +85,19 @@ export default function HomePage() {
                             alt="HuyBoon"
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
-                            priority // Load ưu tiên vì là ảnh chính
+                            priority
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
-                        <div className="absolute bottom-6 left-6 text-white">
+                        {/* <div className="absolute bottom-6 left-6 text-white">
                             <p className="text-sm font-mono mb-1 text-primary">
                                 {t("role")}
                             </p>
                             <h2 className="text-2xl font-bold">
                                 {t("slogan")}
                             </h2>
-                        </div>
+                        </div> */}
                     </motion.div>
 
-                    {/* 2. MAP CARD (1x1) */}
                     <motion.div
                         variants={itemVariants}
                         whileHover={hoverScale}
@@ -117,7 +115,6 @@ export default function HomePage() {
                         </p>
                     </motion.div>
 
-                    {/* 3. SOCIAL STACK (1x1) */}
                     <motion.div
                         variants={itemVariants}
                         className="rounded-3xl border border-border bg-card p-6 flex flex-col justify-between shadow-sm"
@@ -146,7 +143,6 @@ export default function HomePage() {
                         </Link>
                     </motion.div>
 
-                    {/* 4. TECH STACK MARQUEE (2x1) */}
                     <motion.div
                         variants={itemVariants}
                         className="md:col-span-2 rounded-3xl border border-border bg-card flex flex-col justify-center overflow-hidden relative shadow-sm group"

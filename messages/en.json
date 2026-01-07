@@ -21,7 +21,7 @@
 		"About": {
 			"title": "About",
 			"me": "Me",
-			"description": "I'm a frontend developer with <strong>2 years of experience</strong> working on real-world web projects. I specialize in building clean, scalable interfaces using <span>React</span> and <span>Next.js</span>. Currently expanding towards Full-stack development with Node.js & MongoDB.",
+			"description": "I'm a frontend developer with <strong>1.5 years experience</strong> working on real-world web projects. I specialize in building clean, scalable interfaces using <span>React</span> and <span>Next.js</span>. Currently expanding towards Full-stack development with Node.js & MongoDB.",
 			"years_experience": "Years Experience",
 			"projects_completed": "Projects Completed"
 		},
@@ -83,7 +83,7 @@
 			"greeting_prefix": "Hi, I'm",
 			"greeting_name": "HuyBoon.",
 			"description": "Experienced Frontend Developer with a passion for the Next.js ecosystem. I bridge the gap between design and functionality, building robust web applications with TypeScript and MongoDB to ensure an end-to-end seamless experience.",
-			"role": "Fullstack Developer",
+			"role": "Fullstack Web Developer",
 			"slogan": "Turning ideas into code.",
 			"location_city": "Ho Chi Minh City",
 			"location_country": "Vietnam",
