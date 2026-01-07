@@ -1,12 +1,159 @@
 {
-	"Header": {
-		"portfolio": "Portfolio",
-		"projects": "Projects",
+	"Navigation": {
+		"home": "Home",
 		"services": "Services",
+		"projects": "Projects",
+		"portfolio": "Portfolio",
 		"blog": "Blog",
 		"contact": "Contact",
-		"language": "Language",
-		"dark": "Dark",
-		"light": "Light"
+		"about": "About",
+		"skills": "Skills",
+		"experience": "Experience"
+	},
+	"HomePage": {
+		"Hero": {
+			"role_prefix": "Frontend",
+			"role_suffix": "Developer",
+			"description": "I specialize in building modern, responsive websites using React, Next.js, and Tailwind CSS. Passionate about UI/UX and creating seamless user experiences.",
+			"download_cv": "Download CV"
+		},
+		"About": {
+			"title": "About",
+			"me": "Me",
+			"description": "I'm a frontend developer with <strong>2 years of experience</strong> working on real-world web projects. I specialize in building clean, scalable interfaces using <span>React</span> and <span>Next.js</span>. Currently expanding towards Full-stack development with Node.js & MongoDB.",
+			"years_experience": "Years Experience",
+			"projects_completed": "Projects Completed"
+		},
+		"Experience": {
+			"title_1": "Work",
+			"title_2": "Experience",
+			"present": "Present",
+			"view_more": "View more",
+			"collapse": "Collapse",
+			"freelance_details": [
+				"Developed responsive websites for various brands and small businesses.",
+				"Completed multiple freelance projects using modern web technologies."
+			],
+			"business_details": [
+				"Managed business operations and marketing activities for a live music café."
+			],
+			"graduation_details": [
+				"Graduated with a major in Mechatronics Engineering."
+			],
+			"tester_details": [
+				"Tested features and functionalities of new versions of the IXM system.",
+				"Planned and executed test cases, and reported results using Jira.",
+				"Built OfficeLinx and Space Calling Extension."
+			]
+		},
+		"Projects": {
+			"title_1": "Featured",
+			"title_2": "Projects",
+			"subtitle": "Some of the real-world projects I have built for clients and businesses.",
+			"view_demo": "Live Demo",
+			"view_all": "View All Projects",
+			"status": {
+				"completed": "Completed",
+				"developing": "In Progress"
+			},
+			"thuyduong_desc": "A luxury spa website featuring service listings and booking functionality.",
+			"amazing_desc": "A travel agency website offering tour packages and destination guides.",
+			"mknails_desc": "Modern nail salon website with services showcase and online booking.",
+			"varia_desc": "Hotel booking platform with real-time room availability checking."
+		},
+		"Contact": {
+			"title_1": "Get in",
+			"title_2": "Touch",
+			"subtitle": "I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.",
+			"info_title": "Contact Information",
+			"form_title": "Send Me a Message",
+			"form_subtitle": "I'll get back to you as soon as possible.",
+			"label_name": "Name",
+			"label_email": "Email",
+			"label_message": "Message",
+			"placeholder_name": "Your Name",
+			"placeholder_message": "How can I help you?",
+			"btn_send": "Send Message",
+			"success_message": "Thank you! Your message has been sent successfully.",
+			"error_fill": "Please fill in all fields.",
+			"error_generic": "Something went wrong. Please try again later."
+		},
+		"Landing": {
+			"greeting_prefix": "Hi, I'm",
+			"greeting_name": "HuyBoon.",
+			"description": "Experienced Frontend Developer with a passion for the Next.js ecosystem. I bridge the gap between design and functionality, building robust web applications with TypeScript and MongoDB to ensure an end-to-end seamless experience.",
+			"role": "Fullstack Developer",
+			"slogan": "Turning ideas into code.",
+			"location_city": "Ho Chi Minh City",
+			"location_country": "Vietnam",
+			"contact_me": "Contact Me",
+			"arsenal": "My Arsenal"
+		}
+	},
+	"Services": {
+		"title_1": "My",
+		"title_2": "Services",
+		"subtitle": "Providing optimized digital solutions to help individuals and businesses elevate their brand presence online.",
+		"packages": {
+			"landing_page": {
+				"title": "Conversion Landing Page",
+				"desc": "High-converting landing pages designed to maximize your marketing campaign's ROI and sales performance.",
+				"features": [
+					"Custom Design",
+					"Lightning Speed",
+					"Fully Responsive"
+				]
+			},
+			"business": {
+				"title": "SME Business Website",
+				"desc": "Comprehensive web solutions for small and medium enterprises to build trust and connect with customers effectively.",
+				"features": [
+					"SEO Optimized",
+					"Content Management",
+					"Secure & Scalable"
+				]
+			},
+			"personal": {
+				"title": "Personal Branding",
+				"desc": "Crafting unique Portfolios or Personal Blogs to help you stand out to recruiters and potential partners.",
+				"features": [
+					"Modern Aesthetics",
+					"Blog Integration",
+					"Social Links"
+				]
+			}
+		},
+		"cta": "Start a Project"
+	},
+	"ProjectPage": {
+		"title_1": "All",
+		"title_2": "Projects",
+		"subtitle": "A collection of real-world products I've deployed, ranging from Landing Pages to complex Web Apps.",
+		"status": {
+			"completed": "Completed",
+			"in_progress": "In Progress"
+		},
+		"view_demo": "View Demo",
+		"developing": "In Progress",
+		"descriptions": {
+			"thuyduong": "Luxury spa website featuring service listings, booking, and a relaxing UI.",
+			"amazing": "Phu Quoc travel portal with tour booking and destination guides.",
+			"mknails": "Modern UI for US-based nail salons with reviews and online booking.",
+			"varia": "Hotel booking system with real-time availability and payment integration.",
+			"ecommerce": "Online store with product management, cart, and user auth.",
+			"tour": "Travel website showcasing tours and Phu Quoc guides with user-friendly UI.",
+			"blog": "Blogging platform with content management and multilingual support.",
+			"skincare": "Skincare landing page optimized for marketing and lead generation."
+		}
+	},
+	"Footer": {
+		"slogan": "Building digital products, brands, and experiences. Focused on React, Next.js ecosystem and high-performance UI.",
+		"explore": "Explore",
+		"status": "Status",
+		"available": "Available for new projects",
+		"contact_text": "Interested in working together? Drop me a line.",
+		"rights": "HuyBoonCode. All rights reserved.",
+		"privacy": "Privacy Policy",
+		"terms": "Terms of Service"
 	}
 }

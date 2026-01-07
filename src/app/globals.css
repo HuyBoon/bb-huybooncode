@@ -1,130 +1,189 @@
 @import "tailwindcss";
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-:root {
-	--white-color: #fff;
-	--black-color: #000;
+@custom-variant dark (&:where(.dark, .dark *));
 
-	--title-color: #100c08;
-	--text-color: #fff;
-	--text-secondary-color: #c8a2ff;
+@layer base {
+    :root {
+        --background: #ffffff;
+        --foreground: #1d2939;
 
-	--theme-color: #135e3d;
-	--primary-color: #01a1bd;
-	--accent-color: #6a0dad;
-	--text-content: #fff;
-	--secondary-color: #52ba31;
-	--button-color: #ffd700;
-	--hover-color: #03fa6e;
-	--tertiary-color: #1e2a3a;
-	--primary-color1: #fb6542;
-	--primary-color2: #ffbb00;
+        --card: #ffffff;
+        --card-foreground: #020817;
 
-	--primary-color1-opc: 99, 171, 69;
+        --popover: #ffffff;
+        --popover-foreground: #020817;
+
+        --primary: #267ff4;
+        --primary-foreground: #f0f9fa;
+
+        --secondary: #135e3d;
+        --secondary-foreground: #f0f9fa;
+
+        --muted: #f1f5f9;
+        --muted-foreground: #64748b;
+
+        --accent: #f1f5f9;
+        --accent-foreground: #0f172a;
+
+        --destructive: #ef4444;
+        --destructive-foreground: #f8fafc;
+
+        --border: #e2e8f0;
+        --input: #e2e8f0;
+        --ring: #01a1bd;
+
+        --radius: 0.5rem;
+    }
+
+    :root.dark {
+        --background: #1d2939;
+        --foreground: #f8fafc;
+
+        --card: #020817;
+        --card-foreground: #f8fafc;
+
+        --popover: #020817;
+        --popover-foreground: #f8fafc;
+
+        --primary: #488ae6;
+        --primary-foreground: #020817;
+
+        --secondary: #1e8a5a;
+        --secondary-foreground: #f8fafc;
+
+        --muted: #1e293b;
+        --muted-foreground: #94a3b8;
+
+        --accent: #1e293b;
+        --accent-foreground: #f8fafc;
+
+        --destructive: #7f1d1d;
+        --destructive-foreground: #f8fafc;
+
+        --border: #1e293b;
+        --input: #1e293b;
+        --ring: #06b6d4;
+    }
 }
+
 @theme {
-	--color-primary: var(--primary-color);
-	--color-secondary: var(--secondary-color);
-	--color-hover: var(--hover-color);
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular,
+        monospace;
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
 
-	--color-primary-1: var(--primary-color1);
-	--color-primary-2: var(--primary-color2);
-
-	--color-title: var(--title-color);
-	--color-text-color: var(--text-color);
-
-	--color-white: var(--white-color);
-	--color-black: var(--black-color);
-
-	--color-accent: var(--accent-color);
-	--color-theme: var(--theme-color);
-	--color-button: var(--button-color);
-	--color-content: var(--text-content);
-	--color-bg-btn-hover: black;
-	--color-tertiary: var(--tertiary-color);
-	--color-white-15: rgba(255, 255, 255, 0.15);
-	--color-header-light: rgba(255, 255, 255, 0.2);
-	--color-header-dark: rgba(0, 0, 0, 0.8);
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
 }
 
 @layer base {
-	body {
-		margin: 0;
-		padding: 0;
-		color: var(--title-color);
-		font-size: 16px;
-		font-weight: 400;
-		line-height: 30px;
-	}
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+        overflow-x: hidden;
+    }
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-mono font-bold tracking-tight;
+    }
 }
 
-.line-clamp-2 {
-	min-height: 3.2rem;
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
+@utility line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
 @keyframes shineEffect {
-	0% {
-		height: 0%;
-		opacity: 1;
-	}
-	100% {
-		height: 300%;
-		opacity: 0;
-	}
+    0% {
+        height: 0%;
+        opacity: 1;
+    }
+    100% {
+        height: 300%;
+        opacity: 0;
+    }
 }
 @keyframes spin-slow {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes spin-fast {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes pulse-smooth {
-	0%,
-	100% {
-		opacity: 0.4;
-	}
-	50% {
-		opacity: 1;
-	}
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 @keyframes spin-reverse {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(-360deg);
-	}
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
 }
 
 .animate-spin-slow {
-	animation: spin-slow 3s linear infinite;
+    animation: spin-slow 3s linear infinite;
 }
 
 .animate-spin-reverse {
-	animation: spin-reverse 1s linear infinite;
+    animation: spin-reverse 1s linear infinite;
 }
 
 .animate-spin-fast {
-	animation: spin-fast 1.2s linear infinite;
+    animation: spin-fast 1.2s linear infinite;
 }
 
 .animate-pulse-smooth {
-	animation: pulse-smooth 1.5s ease-in-out infinite;
+    animation: pulse-smooth 1.5s ease-in-out infinite;
 }

@@ -1,12 +1,159 @@
 {
-	"Header": {
-		"portfolio": "Portfolio",
-		"projects": "Dự án",
+	"Navigation": {
+		"home": "Trang chủ",
 		"services": "Dịch vụ",
+		"projects": "Dự án",
+		"portfolio": "Portfolio",
 		"blog": "Blog",
 		"contact": "Liên hệ",
-		"language": "Ngôn ngữ",
-		"dark": "Tối",
-		"light": "Sáng"
+		"about": "Giới thiệu",
+		"skills": "Kỹ năng",
+		"experience": "Kinh nghiệm"
+	},
+	"HomePage": {
+		"Hero": {
+			"role_prefix": "Lập Trình Viên",
+			"role_suffix": "Frontend",
+			"description": "Tôi chuyên xây dựng các website hiện đại, chuẩn SEO và tối ưu trải nghiệm người dùng bằng React, Next.js và Tailwind CSS.",
+			"download_cv": "Tải CV của tôi"
+		},
+		"About": {
+			"title": "About",
+			"me": "me",
+			"description": "Tôi là một lập trình viên Frontend với <strong>2 năm kinh nghiệm</strong> thực chiến. Tôi chuyên xây dựng giao diện sạch, tối ưu và thân thiện bằng <span>React</span> và <span>Next.js</span>. Hiện tại, tôi đang mở rộng kỹ năng sang Full-stack với Node.js & MongoDB.",
+			"years_experience": "Năm Kinh Nghiệm",
+			"projects_completed": "Dự Án Hoàn Thành"
+		},
+		"Experience": {
+			"title_1": "Kinh Nghiệm",
+			"title_2": "Làm Việc",
+			"present": "Hiện tại",
+			"view_more": "Xem thêm",
+			"collapse": "Thu gọn",
+			"freelance_details": [
+				"Phát triển các website responsive cho nhiều thương hiệu và doanh nghiệp nhỏ.",
+				"Hoàn thành nhiều dự án freelance sử dụng công nghệ web hiện đại."
+			],
+			"business_details": [
+				"Quản lý vận hành kinh doanh và marketing cho phòng trà ca nhạc."
+			],
+			"graduation_details": [
+				"Tốt nghiệp chuyên ngành Cơ điện tử."
+			],
+			"tester_details": [
+				"Kiểm thử tính năng và chức năng của các phiên bản mới hệ thống IXM.",
+				"Lập kế hoạch và chạy test case, báo cáo kết quả lên Jira.",
+				"Xây dựng OfficeLinx và Space Calling Extension."
+			]
+		},
+		"Projects": {
+			"title_1": "Dự Án",
+			"title_2": "Tiêu Biểu",
+			"subtitle": "Một số dự án thực tế tôi đã thực hiện cho khách hàng và doanh nghiệp.",
+			"view_demo": "Xem Demo",
+			"view_all": "Xem tất cả dự án",
+			"status": {
+				"completed": "Hoàn thành",
+				"developing": "Đang phát triển"
+			},
+			"thuyduong_desc": "Website spa cao cấp với tính năng đặt lịch hẹn và giới thiệu dịch vụ.",
+			"amazing_desc": "Website du lịch cung cấp tour trọn gói và cẩm nang du lịch Phú Quốc.",
+			"mknails_desc": "Website tiệm Nail hiện đại tại Mỹ, tích hợp booking online.",
+			"varia_desc": "Hệ thống đặt phòng khách sạn với tính năng kiểm tra phòng trống thực tế."
+		},
+		"Contact": {
+			"title_1": "Liên Hệ",
+			"title_2": "Với Tôi",
+			"subtitle": "Tôi luôn sẵn sàng lắng nghe về các dự án mới, cơ hội hợp tác hoặc chỉ đơn giản là chia sẻ kiến thức.",
+			"info_title": "Thông Tin Liên Hệ",
+			"form_title": "Gửi Tin Nhắn",
+			"form_subtitle": "Tôi sẽ phản hồi sớm nhất có thể.",
+			"label_name": "Họ và tên",
+			"label_email": "Email",
+			"label_message": "Nội dung",
+			"placeholder_name": "Nhập tên của bạn",
+			"placeholder_message": "Bạn muốn trao đổi về vấn đề gì...",
+			"btn_send": "Gửi Tin Nhắn",
+			"success_message": "Cảm ơn! Tin nhắn của bạn đã được gửi thành công.",
+			"error_fill": "Vui lòng điền đầy đủ thông tin.",
+			"error_generic": "Có lỗi xảy ra. Vui lòng thử lại sau."
+		},
+		"Landing": {
+			"greeting_prefix": "Chào bạn, mình là",
+			"greeting_name": "HuyBoon.",
+			"description": "Lập trình viên Frontend với niềm đam mê sâu sắc dành cho hệ sinh thái Next.js. Mình chuyên kết nối giữa ngôn ngữ thiết kế và tính năng thực tế, xây dựng các ứng dụng web mạnh mẽ với TypeScript và MongoDB nhằm đảm bảo trải nghiệm người dùng mượt mà và toàn diện nhất.",
+			"role": "Lập trình viên Fullstack",
+			"slogan": "Biến ý tưởng thành mã nguồn.",
+			"location_city": "Thành phố Hồ Chí Minh",
+			"location_country": "Việt Nam",
+			"contact_me": "Liên hệ ngay",
+			"arsenal": "Kỹ năng chuyên môn"
+		}
+	},
+	"Services": {
+		"title_1": "Dịch Vụ",
+		"title_2": "Của Tôi",
+		"subtitle": "Cung cấp các giải pháp kỹ thuật số tối ưu, giúp cá nhân và doanh nghiệp nâng tầm thương hiệu trên không gian số.",
+		"packages": {
+			"landing_page": {
+				"title": "Landing Page Chuyển Đổi",
+				"desc": "Thiết kế Landing Page chuyên nghiệp, tập trung vào việc tối ưu tỷ lệ chuyển đổi và tăng doanh thu cho chiến dịch marketing.",
+				"features": [
+					"Giao diện độc quyền",
+					"Tối ưu tốc độ load",
+					"Tương thích mọi thiết bị"
+				]
+			},
+			"business": {
+				"title": "Website Doanh Nghiệp",
+				"desc": "Giải pháp website toàn diện cho doanh nghiệp vừa và nhỏ, giúp khẳng định uy tín và kết nối khách hàng hiệu quả.",
+				"features": [
+					"Chuẩn SEO Google",
+					"Quản lý nội dung (CMS)",
+					"Bảo mật & Ổn định"
+				]
+			},
+			"personal": {
+				"title": "Thương Hiệu Cá Nhân",
+				"desc": "Xây dựng Portfolio hoặc Blog cá nhân mang đậm dấu ấn riêng, giúp bạn nổi bật trong mắt nhà tuyển dụng và đối tác.",
+				"features": [
+					"Thiết kế hiện đại",
+					"Tích hợp Blog",
+					"Kết nối mạng xã hội"
+				]
+			}
+		},
+		"cta": "Bắt đầu dự án ngay"
+	},
+	"ProjectPage": {
+		"title_1": "Tất Cả",
+		"title_2": "Dự Án",
+		"subtitle": "Danh sách các sản phẩm thực tế tôi đã triển khai, từ Landing Page đến các hệ thống Web App phức tạp.",
+		"status": {
+			"completed": "Hoàn thành",
+			"in_progress": "Đang thực hiện"
+		},
+		"view_demo": "Xem Demo",
+		"developing": "Đang phát triển",
+		"descriptions": {
+			"thuyduong": "Website spa cao cấp với tính năng liệt kê dịch vụ, đặt lịch và giao diện thư giãn.",
+			"amazing": "Cổng thông tin du lịch Phú Quốc với tính năng đặt tour và hướng dẫn điểm đến.",
+			"mknails": "Giao diện hiện đại cho tiệm nails tại Mỹ, tích hợp đánh giá khách hàng và đặt lịch.",
+			"varia": "Hệ thống đặt phòng khách sạn với quản lý phòng trống và thanh toán tích hợp.",
+			"ecommerce": "Cửa hàng trực tuyến với quản lý sản phẩm, giỏ hàng và xác thực người dùng.",
+			"tour": "Website du lịch hiển thị tour và cẩm nang du lịch Phú Quốc với giao diện thân thiện.",
+			"blog": "Nền tảng blog hỗ trợ viết bài, quản lý nội dung và đa ngôn ngữ.",
+			"skincare": "Landing page thương hiệu mỹ phẩm tối ưu cho chiến dịch marketing và thu thập leads."
+		}
+	},
+	"Footer": {
+		"slogan": "Xây dựng sản phẩm số, thương hiệu và trải nghiệm người dùng. Tập trung vào hệ sinh thái React, Next.js và hiệu suất cao.",
+		"explore": "Khám phá",
+		"status": "Trạng thái",
+		"available": "Sẵn sàng nhận dự án mới",
+		"contact_text": "Bạn muốn hợp tác cùng tôi? Hãy gửi tin nhắn ngay.",
+		"rights": "HuyBoonCode. Bảo lưu mọi quyền.",
+		"privacy": "Chính sách bảo mật",
+		"terms": "Điều khoản sử dụng"
 	}
 }

@@ -1,201 +1,256 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence, Variants } from "framer-motion";
 import { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
+import {
+    Briefcase,
+    Calendar,
+    MapPin,
+    ChevronDown,
+    ChevronUp,
+} from "lucide-react";
 
-const containerVariants = {
-	hidden: { opacity: 0, y: 20 },
-	visible: {
-		opacity: 1,
-		y: 0,
-		transition: { duration: 0.8, staggerChildren: 0.2 },
-	},
+const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.1 },
+    },
 };
 
-const itemVariants = {
-	hidden: { opacity: 0, scale: 0.8 },
-	visible: {
-		opacity: 1,
-		scale: 1,
-		transition: { duration: 0.5 },
-	},
+const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: { duration: 0.4, ease: "easeOut" }, // Đã fix lỗi type ở đây
+    },
+    exit: {
+        opacity: 0,
+        scale: 0.95,
+        transition: { duration: 0.2 },
+    },
 };
-
-const tagVariants = {
-	hidden: { opacity: 0, x: -20 },
-	visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-};
-
-const experiences = [
-	{
-		start: "2023",
-		end: "Present",
-		title: "Freelance Developer",
-		company: "Independent",
-		location: "Remote",
-		details: [
-			"Developed responsive websites for multiple brands and small businesses.",
-			"Completed various client projects using modern web technologies.",
-		],
-
-		technologies: ["HTML", "CSS", "JavaScript", "React", "Next.js"],
-	},
-	{
-		start: "2021",
-		end: "2023",
-		title: "Business",
-		company: "Music Lounge - Color of the Wind",
-		location: "District 10, Ho Chi Minh City, Vietnam",
-		details: [
-			"Managed business operations and marketing for the music lounge.",
-		],
-		technologies: ["Business Management", "Marketing"],
-	},
-	{
-		start: "2020",
-		end: "2020",
-		title: "Graduation",
-		company: "HCMC University of Technology",
-		location: "Ho Chi Minh City, Vietnam",
-		details: ["Graduated with a degree in Mechatronics."],
-		technologies: [],
-	},
-	{
-		start: "2019",
-		end: "2020",
-		title: "Manual Tester",
-		company: "TMA Solutions",
-		location:
-			"10 Dang Van Ngu Street, Phu Nhuan District, Ho Chi Minh City, Vietnam",
-		details: [
-			"Tested features and functions of new versions of IXM Systems.",
-			"Planned and ran test cases, reporting results to Jira.",
-			"Built OfficeLinx and Space Calling Extension.",
-		],
-		technologies: ["Jira", "Manual Testing", "Teamwork"],
-	},
-];
 
 const ProfessionalExperience = () => {
-	const [showAll, setShowAll] = useState(false);
-	const sectionRef = useRef(null);
-	const isInView = useInView(sectionRef, { once: false });
+    const t = useTranslations("HomePage.Experience");
+    const [showAll, setShowAll] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
+    const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-	return (
-		<section
-			ref={sectionRef}
-			className="relative px-4 sm:px-6 lg:px-12 xl:px-24 "
-		>
-			<motion.div
-				variants={containerVariants}
-				initial="hidden"
-				animate={isInView ? "visible" : "hidden"}
-				className="flex flex-col items-center mb-8 sm:mb-12 text-center"
-			>
-				<motion.h2
-					variants={itemVariants}
-					className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-content mb-3 sm:mb-4"
-				>
-					Professional
-					<span className="text-primary"> Experiences</span>
-				</motion.h2>
-				<motion.div
-					variants={itemVariants}
-					className="w-16 sm:w-24 h-1 bg-gradient-to-r from-primary to-[#7c3aed] rounded-full"
-				/>
-			</motion.div>
+    const experiences = [
+        {
+            id: 1,
 
-			<div className="relative max-w-6xl mx-auto shadow-lg">
-				<motion.div
-					variants={containerVariants}
-					initial="hidden"
-					animate={isInView ? "visible" : "hidden"}
-					className="relative p-4 sm:p-6"
-				>
-					<div className="relative">
-						<div className="absolute left-1 sm:left-1/2 transform sm:-translate-x-1/2 h-full w-1 bg-gray-300" />
-						{experiences
-							.slice(0, showAll ? experiences.length : 2)
-							.map((exp, index) => {
-								const isLeft = index % 2 === 0;
-								return (
-									<motion.div
-										key={exp.start + exp.end}
-										variants={itemVariants}
-										className={`mb-8 flex w-full ${
-											isLeft
-												? "sm:justify-start justify-start"
-												: "sm:justify-end justify-start"
-										}`}
-									>
-										<div className="absolute left-0 sm:left-1/2 transform sm:-translate-x-1/2  w-3 h-3 bg-primary rounded-full" />
-										<div
-											className={`w-full sm:max-w-[45%] p-4 sm:p-6 rounded-lg shadow-lg shadow-white/10 border border-gray-50 ${
-												isLeft
-													? "sm:mr-4 md:mr-8 ml-8 sm:ml-0"
-													: "sm:ml-4 md:ml-6 ml-8"
-											}`}
-										>
-											<div className="flex items-center mb-2 relative">
-												<div>
-													<p className="text-sm sm:text-base font-bold text-content">
-														{exp.start} - {exp.end || "Present"}
-													</p>
-												</div>
-											</div>
-											<h3 className="text-lg sm:text-xl font-semibold text-content">
-												{exp.title}
-											</h3>
-											<p className="text-sm sm:text-base text-content">
-												{exp.company} - {exp.location}
-											</p>
-											<ul className="mt-2 text-sm sm:text-base text-content list-disc list-inside">
-												{exp.details.map((detail, i) => (
-													<li key={i}>{detail}</li>
-												))}
-											</ul>
-											<div className="mt-2 flex flex-wrap gap-1">
-												{exp.technologies.map((tech, i) => (
-													<span
-														key={i}
-														className="text-xs sm:text-sm bg-primary text-black px-2 py-1 rounded-full"
-													>
-														{tech}
-													</span>
-												))}
-											</div>
-										</div>
-									</motion.div>
-								);
-							})}
-					</div>
+            start: "2023",
 
-					{!showAll && (
-						<motion.div variants={itemVariants} className="mt-6 text-center">
-							<button
-								onClick={() => setShowAll(true)}
-								className="cursor-pointer relative px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-[#7c3aed] text-white font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all"
-								aria-label="View more experience"
-							>
-								View More
-							</button>
-						</motion.div>
-					)}
-					{showAll && (
-						<motion.div variants={itemVariants} className="mt-6 text-center">
-							<button
-								onClick={() => setShowAll(false)}
-								className="cursor-pointer relative px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-[#7c3aed] text-white font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all"
-								aria-label="Collapse experience"
-							>
-								Collapse
-							</button>
-						</motion.div>
-					)}
-				</motion.div>
-			</div>
-		</section>
-	);
+            end: t("present"),
+
+            title: "Freelance Developer",
+
+            company: "Independent",
+
+            location: "Remote",
+
+            details: t.raw("freelance_details"),
+
+            technologies: ["HTML", "CSS", "JavaScript", "React", "Next.js"],
+        },
+
+        {
+            id: 2,
+
+            start: "2021",
+
+            end: "2023",
+
+            title: "Business Manager",
+
+            company: "Music Lounge - Color of the Wind",
+
+            location: "Ho Chi Minh City",
+
+            details: t.raw("business_details"),
+
+            technologies: ["Management", "Marketing", "Operation"],
+        },
+
+        {
+            id: 3,
+
+            start: "2020",
+
+            end: "2020",
+
+            title: "Graduation",
+
+            company: "HCMC University of Technology",
+
+            location: "Ho Chi Minh City",
+
+            details: t.raw("graduation_details"),
+
+            technologies: ["Mechatronics", "Engineering"],
+        },
+
+        {
+            id: 4,
+
+            start: "2019",
+
+            end: "2020",
+
+            title: "Manual Tester",
+
+            company: "TMA Solutions",
+
+            location: "Ho Chi Minh City",
+
+            details: t.raw("tester_details"),
+
+            technologies: ["Jira", "Manual Testing", "Teamwork"],
+        },
+    ];
+
+    const toggleShowAll = () => {
+        if (showAll) {
+            sectionRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+            setTimeout(() => setShowAll(false), 300);
+        } else {
+            setShowAll(true);
+        }
+    };
+
+    const visibleExperiences = showAll ? experiences : experiences.slice(0, 2);
+
+    return (
+        <section
+            ref={sectionRef}
+            id="experience"
+            className="relative px-4 sm:px-6 lg:px-12 xl:px-24 py-12 scroll-mt-20 overflow-hidden"
+        >
+            <motion.div
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                variants={containerVariants}
+                className="flex flex-col items-center mb-12 text-center"
+            >
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+                    {t("title_1")}{" "}
+                    <span className="text-primary">{t("title_2")}</span>
+                </h2>
+                <div className="h-1.5 w-20 bg-gradient-to-r from-primary to-secondary rounded-full opacity-80" />
+            </motion.div>
+
+            <div className="relative max-w-5xl mx-auto">
+                {/* Timeline Line: Điều chỉnh vị trí trên mobile để không bị quá sát lề */}
+                <div className="absolute left-2 sm:left-1/2 transform sm:-translate-x-1/2 h-full w-0.5 bg-border dark:bg-white/10" />
+
+                <motion.div layout className="relative flex flex-col w-full">
+                    <AnimatePresence mode="popLayout">
+                        {visibleExperiences.map((exp, index) => {
+                            const isLeft = index % 2 === 0;
+                            return (
+                                <motion.div
+                                    key={exp.id}
+                                    layout
+                                    variants={itemVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
+                                    className={`mb-10 flex w-full flex-col sm:flex-row items-center sm:items-start ${
+                                        isLeft
+                                            ? "sm:justify-start"
+                                            : "sm:justify-end"
+                                    }`}
+                                >
+                                    {/* Dot: Căn chỉnh lại theo vị trí mới của line */}
+                                    <div className="absolute left-2 sm:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-background border-[3px] border-primary z-10 mt-1.5 shadow-lg shadow-primary/20" />
+
+                                    {/* Card: Sửa width và margin trên mobile để không lấn viền */}
+                                    <div
+                                        className={`relative w-[calc(100%-2.5rem)] sm:w-[45%] ml-auto sm:ml-0 p-5 sm:p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md hover:border-primary/30 transition-all group ${
+                                            isLeft ? "sm:mr-auto" : "sm:ml-auto"
+                                        }`}
+                                    >
+                                        <div className="flex flex-col gap-1 mb-3">
+                                            <div className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-primary font-mono bg-primary/10 w-fit px-2 py-1 rounded">
+                                                <Calendar size={12} />
+                                                {exp.start} - {exp.end}
+                                            </div>
+                                            <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                                                {exp.title}
+                                            </h3>
+                                        </div>
+
+                                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mb-4 font-medium">
+                                            <div className="flex items-center gap-1">
+                                                <Briefcase size={12} />
+                                                {exp.company}
+                                            </div>
+                                            <div className="flex items-center gap-1">
+                                                <MapPin size={12} />
+                                                {exp.location}
+                                            </div>
+                                        </div>
+
+                                        <ul className="mb-4 space-y-2">
+                                            {exp.details.map(
+                                                (detail: string, i: number) => (
+                                                    <li
+                                                        key={i}
+                                                        className="text-xs sm:text-sm text-muted-foreground flex items-start gap-2"
+                                                    >
+                                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
+                                                        <span className="leading-relaxed">
+                                                            {detail}
+                                                        </span>
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+
+                                        <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/50">
+                                            {exp.technologies.map((tech, i) => (
+                                                <span
+                                                    key={i}
+                                                    className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-muted text-foreground/80 hover:bg-primary/10 hover:text-primary transition-colors"
+                                                >
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </AnimatePresence>
+                </motion.div>
+
+                <motion.div className="mt-4 text-center relative z-20">
+                    <button
+                        onClick={toggleShowAll}
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow-lg hover:-translate-y-1 transition-all"
+                    >
+                        {showAll ? (
+                            <>
+                                <ChevronUp size={18} /> {t("collapse")}
+                            </>
+                        ) : (
+                            <>
+                                <ChevronDown size={18} /> {t("view_more")}
+                            </>
+                        )}
+                    </button>
+                </motion.div>
+            </div>
+        </section>
+    );
 };
 
 export default ProfessionalExperience;

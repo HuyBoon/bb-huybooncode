@@ -1,0 +1,5 @@
+{
+    "prettier.htmlWhitespaceSensitivity": "ignore",
+    "css.lint.emptyRules": "ignore",
+    "css.lint.unknownAtRules": "ignore"
+}
