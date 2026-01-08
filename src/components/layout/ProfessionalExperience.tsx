@@ -144,7 +144,7 @@ const ProfessionalExperience = () => {
                     {t("title_1")}{" "}
                     <span className="text-primary">{t("title_2")}</span>
                 </h2>
-                <div className="h-1.5 w-20 bg-gradient-to-r from-primary to-secondary rounded-full opacity-80" />
+                <div className="h-1.5 w-20 bg-linear-to-r from-primary to-secondary rounded-full opacity-80" />
             </motion.div>
 
             <div className="relative max-w-5xl mx-auto">

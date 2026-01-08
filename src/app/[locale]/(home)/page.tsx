@@ -128,7 +128,7 @@ export default function HomePage() {
                                 <Github size={24} />
                             </Link>
                             <Link
-                                href="https://linkedin.com"
+                                href="https://www.linkedin.com/in/huy-boon-438168398/"
                                 target="_blank"
                                 className="p-3 bg-muted rounded-2xl hover:bg-[#0077b5] hover:text-white transition-colors flex-1 flex items-center justify-center text-foreground"
                             >

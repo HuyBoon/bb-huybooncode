@@ -66,7 +66,7 @@ const Skills = () => {
                     </motion.h2>
                     <motion.div
                         variants={itemVariants}
-                        className="h-1.5 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto md:mx-0 opacity-80"
+                        className="h-1.5 w-20 bg-linear-to-r from-primary to-secondary rounded-full mx-auto md:mx-0 opacity-80"
                     />
                 </motion.div>
 

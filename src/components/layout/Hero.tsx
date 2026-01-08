@@ -33,7 +33,7 @@ export default function Hero() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.8 }}
-                                className="bg-gradient-to-r from-primary via-blue-600 dark:via-white to-primary bg-clip-text text-transparent"
+                                className="bg-linear-to-r from-primary via-blue-600 dark:via-white to-primary bg-clip-text text-transparent"
                             >
                                 Developer
                             </motion.span>
@@ -99,7 +99,7 @@ export default function Hero() {
                         className="md:w-1/2 relative hidden md:block"
                         style={{ y }}
                     >
-                        <div className="relative w-[90%] mx-auto aspect-[3/2] group">
+                        <div className="relative w-[90%] mx-auto aspect-3/2 group">
                             <motion.div
                                 initial={{ scale: 0.9 }}
                                 animate={{ scale: 1 }}
@@ -108,11 +108,11 @@ export default function Hero() {
                                     repeat: Infinity,
                                     repeatType: "mirror",
                                 }}
-                                className="absolute -inset-1 rounded-[2rem] bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 blur-2xl opacity-40 dark:opacity-60"
+                                className="absolute -inset-1 rounded-4xl bg-linear-to-r from-primary/20 via-secondary/20 to-primary/20 blur-2xl opacity-40 dark:opacity-60"
                             />
 
-                            <div className="relative w-full h-full rounded-[2rem] p-2 bg-gradient-to-br from-white/50 to-white/20 dark:from-white/10 dark:to-transparent border border-white/20 backdrop-blur-sm">
-                                <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden bg-gray-100 dark:bg-gray-900">
+                            <div className="relative w-full h-full rounded-4xl p-2 bg-linear-to-br from-white/50 to-white/20 dark:from-white/10 dark:to-transparent border border-white/20 backdrop-blur-sm">
+                                <div className="relative w-full h-full rounded-3xl overflow-hidden bg-gray-100 dark:bg-gray-900">
                                     <Image
                                         src="/huybooncode.png"
                                         alt="Huy Boon Code Avatar"
@@ -120,7 +120,7 @@ export default function Hero() {
                                         className="object-cover scale-105 group-hover:scale-100 transition-transform duration-700 ease-in-out"
                                         priority
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 dark:opacity-100 transition-opacity" />
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-0 dark:opacity-100 transition-opacity" />
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ import { routing } from "@/i18n/routing";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
+import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
 
 const inter = Inter({
     subsets: ["latin", "vietnamese"],
@@ -23,8 +24,43 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "HuyBoonCode",
-    description: "HuyBoon Code - Professional Web Solutions",
+    title: {
+        template: "%s | HuyBoonCode - Frontend Developer",
+        default:
+            "HuyBoonTech | Frontend Developer & Professional Web Solutions",
+    },
+    description:
+        "HuyBoonCode là một Frontend Developer chuyên nghiệp với hơn 1 năm kinh nghiệm, chuyên cung cấp các giải pháp thiết kế website, Landing Page và Web App hiện đại, tối ưu SEO.",
+    keywords: [
+        "HuyBoonTech",
+        "Frontend Developer",
+        "Thiết kế website",
+        "Next.js",
+        "React Developer",
+        "Web Solutions",
+    ],
+    openGraph: {
+        title: "HuyBoonTech | Professional Web Solutions",
+        description:
+            "Chuyên xây dựng các website hoàn hảo, hấp dẫn và hiệu suất cao.",
+        url: "https://huyboon.tech",
+        siteName: "HuyBoonCode",
+        images: [
+            {
+                url: "/og-image.png",
+                width: 1200,
+                height: 630,
+            },
+        ],
+        locale: "vi_VN",
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "HuyBoonTech | Frontend Developer",
+        description: "Professional Web Development Services",
+        images: ["/og-image.png"],
+    },
 };
 
 export default async function LocaleLayout({
@@ -39,7 +75,7 @@ export default async function LocaleLayout({
     const supportedLocales: readonly ["vi", "en"] = routing.locales;
     const localeRaw = supportedLocales.includes(locale as "vi" | "en")
         ? (locale as "vi" | "en")
-        : "vi";
+        : "en";
 
     if (!supportedLocales.includes(localeRaw)) {
         notFound();
@@ -74,6 +110,7 @@ export default async function LocaleLayout({
                         />
                     </ThemeProvider>
                 </NextIntlClientProvider>
+                <ScrollToTopButton />
             </body>
         </html>
     );
