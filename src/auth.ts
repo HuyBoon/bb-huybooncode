@@ -3,7 +3,7 @@ import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import connectDB from "@/libs/db";
-import User from "./models/User";
+import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 const LoginSchema = z.object({
@@ -22,7 +22,10 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                     const { email, password } = parsedCredentials.data;
 
                     await connectDB();
-                    const user = await User.findOne({ email });
+
+                    const user = await User.findOne({ email }).select(
+                        "+password"
+                    );
 
                     if (!user) return null;
 
@@ -30,35 +33,41 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                         password,
                         user.password
                     );
+                    if (!passwordsMatch) return null;
 
-                    if (passwordsMatch) {
-                        if (
-                            user.role !== "admin" &&
-                            user.role !== "superAdmin"
-                        ) {
-                            throw new Error("FORBIDDEN_ACCESS");
-                        }
-
-                        return {
-                            id: user._id.toString(),
-                            name: user.name,
-                            email: user.email,
-                            role: user.role,
-                            image: user.image,
-                        };
+                    if (user.isActive === false) {
+                        throw new Error("ACCOUNT_LOCKED");
                     }
+
+                    try {
+                        await User.findByIdAndUpdate(user._id, {
+                            lastLogin: new Date(),
+                        });
+                    } catch (error) {
+                        console.error("Update lastLogin failed", error);
+                    }
+
+                    return {
+                        id: user._id.toString(),
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        image: user.image,
+                    };
                 }
-                console.log("Invalid credentials");
+
                 return null;
             },
         }),
     ],
-
     callbacks: {
+        ...authConfig.callbacks,
+
         async jwt({ token, user, trigger, session }) {
             if (user) {
-                token.role = user.role;
+                token.role = (user.role as string) || "user";
                 token.image = user.image;
+                token.id = user.id as string;
             }
 
             if (trigger === "update" && session) {
@@ -71,6 +80,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
 
         async session({ session, token }) {
             if (token && session.user) {
+                session.user.id = token.id as string;
                 session.user.role = token.role as string;
                 session.user.image = token.image as string;
             }

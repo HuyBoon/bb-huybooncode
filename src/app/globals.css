@@ -1,74 +1,106 @@
 @import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
-@layer base {
-    :root {
-        --background: #ffffff;
-        --foreground: #1d2939;
+:root {
+    --background: #ffffff;
+    --foreground: #1d2939;
 
-        --card: #ffffff;
-        --card-foreground: #020817;
+    --card: #ffffff;
+    --card-foreground: #020817;
 
-        --popover: #ffffff;
-        --popover-foreground: #020817;
+    --popover: #ffffff;
+    --popover-foreground: #020817;
 
-        --primary: #267ff4;
-        --primary-foreground: #f0f9fa;
+    --primary: #267ff4;
+    --primary-foreground: #f0f9fa;
 
-        --secondary: #135e3d;
-        --secondary-foreground: #f0f9fa;
+    --secondary: #135e3d;
+    --secondary-foreground: #f0f9fa;
 
-        --muted: #f1f5f9;
-        --muted-foreground: #64748b;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
 
-        --accent: #f1f5f9;
-        --accent-foreground: #0f172a;
+    --accent: #f1f5f9;
+    --accent-foreground: #0f172a;
 
-        --destructive: #ef4444;
-        --destructive-foreground: #f8fafc;
+    --destructive: #ef4444;
+    --destructive-foreground: #f8fafc;
 
-        --border: #e2e8f0;
-        --input: #e2e8f0;
-        --ring: #01a1bd;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #01a1bd;
 
-        --radius: 0.5rem;
-    }
+    --radius: 0.5rem;
 
-    :root.dark {
-        --background: #1d2939;
-        --foreground: #f8fafc;
+    --chart-1: #e76e50;
+    --chart-2: #2a9d8f;
+    --chart-3: #264653;
+    --chart-4: #f4a261;
+    --chart-5: #e9c46a;
 
-        --card: #020817;
-        --card-foreground: #f8fafc;
-
-        --popover: #020817;
-        --popover-foreground: #f8fafc;
-
-        --primary: #488ae6;
-        --primary-foreground: #020817;
-
-        --secondary: #1e8a5a;
-        --secondary-foreground: #f8fafc;
-
-        --muted: #1e293b;
-        --muted-foreground: #94a3b8;
-
-        --accent: #1e293b;
-        --accent-foreground: #f8fafc;
-
-        --destructive: #7f1d1d;
-        --destructive-foreground: #f8fafc;
-
-        --border: #1e293b;
-        --input: #1e293b;
-        --ring: #06b6d4;
-    }
+    --sidebar: #f8fafc;
+    --sidebar-foreground: #1d2939;
+    --sidebar-primary: #267ff4;
+    --sidebar-primary-foreground: #f0f9fa;
+    --sidebar-accent: #f1f5f9;
+    --sidebar-accent-foreground: #1d2939;
+    --sidebar-border: #e2e8f0;
+    --sidebar-ring: #01a1bd;
 }
 
-@theme {
+.dark {
+    --background: #1d2939;
+    --foreground: #f8fafc;
+
+    --card: #020817;
+    --card-foreground: #f8fafc;
+
+    --popover: #020817;
+    --popover-foreground: #f8fafc;
+
+    --primary: #488ae6;
+    --primary-foreground: #020817;
+
+    --secondary: #1e8a5a;
+    --secondary-foreground: #f8fafc;
+
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+
+    --accent: #1e293b;
+    --accent-foreground: #f8fafc;
+
+    --destructive: #7f1d1d;
+    --destructive-foreground: #f8fafc;
+
+    --border: #1e293b;
+    --input: #1e293b;
+    --ring: #06b6d4;
+
+    --chart-1: #2662d9;
+    --chart-2: #2eb88a;
+    --chart-3: #e88c30;
+    --chart-4: #af57db;
+    --chart-5: #e23670;
+
+    --sidebar: #0f172a;
+    --sidebar-foreground: #f8fafc;
+    --sidebar-primary: #488ae6;
+    --sidebar-primary-foreground: #020817;
+    --sidebar-accent: #1e293b;
+    --sidebar-accent-foreground: #f8fafc;
+    --sidebar-border: #1e293b;
+    --sidebar-ring: #06b6d4;
+}
+
+@theme inline {
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular,
         monospace;
+
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --color-card: var(--card);
@@ -89,35 +121,27 @@
     --color-input: var(--input);
     --color-ring: var(--ring);
 
+    /* Sidebar & Charts Mappings */
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
 }
 
-@layer base {
-    * {
-        @apply border-border;
-    }
-    body {
-        @apply bg-background text-foreground;
-        font-feature-settings: "rlig" 1, "calt" 1;
-        overflow-x: hidden;
-    }
-    html {
-        scroll-behavior: smooth;
-        scroll-padding-top: 80px;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply font-mono font-bold tracking-tight;
-    }
-}
-
+/* 4. Utilities & Animations của bạn */
 @utility line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -125,6 +149,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 @keyframes shineEffect {
     0% {
         height: 0%;
@@ -143,7 +168,6 @@
         transform: rotate(360deg);
     }
 }
-
 @keyframes spin-fast {
     0% {
         transform: rotate(0deg);
@@ -152,7 +176,6 @@
         transform: rotate(360deg);
     }
 }
-
 @keyframes pulse-smooth {
     0%,
     100% {
@@ -162,7 +185,6 @@
         opacity: 1;
     }
 }
-
 @keyframes spin-reverse {
     0% {
         transform: rotate(0deg);
@@ -175,15 +197,36 @@
 .animate-spin-slow {
     animation: spin-slow 3s linear infinite;
 }
-
 .animate-spin-reverse {
     animation: spin-reverse 1s linear infinite;
 }
-
 .animate-spin-fast {
     animation: spin-fast 1.2s linear infinite;
 }
-
 .animate-pulse-smooth {
     animation: pulse-smooth 1.5s ease-in-out infinite;
+}
+
+/* 5. Base Reset */
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+        overflow-x: hidden;
+    }
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-mono font-bold tracking-tight;
+    }
 }

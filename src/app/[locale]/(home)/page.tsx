@@ -136,7 +136,7 @@ export default function HomePage() {
                             </Link>
                         </div>
                         <Link
-                            href="mailto:contact@huybooncode.com"
+                            href="mailto:huybooncode74@gmail.com"
                             className="mt-2 w-full py-3 bg-foreground text-background rounded-2xl font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
                         >
                             <Mail size={16} /> {t("contact_me")}

@@ -1,13 +1,34 @@
-import createMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
+import NextAuth from "next-auth";
+import createMiddleware from "next-intl/middleware";
+import { authConfig } from "./auth.config";
+import { routing } from "./i18n/routing";
 
-export default createMiddleware(routing);
+const intlMiddleware = createMiddleware(routing);
+
+const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
+    const { nextUrl } = req;
+
+    const isApiOrStatic =
+        nextUrl.pathname.startsWith("/api") ||
+        nextUrl.pathname.startsWith("/_next") ||
+        nextUrl.pathname.startsWith("/_vercel") ||
+        /\.(.*)$/.test(nextUrl.pathname);
+
+    const isAdminRoute = nextUrl.pathname.startsWith("/admin");
+
+    const isAuthRoute =
+        nextUrl.pathname === "/login" ||
+        nextUrl.pathname === "/register" ||
+        nextUrl.pathname.startsWith("/auth");
+    if (isApiOrStatic || isAdminRoute || isAuthRoute) {
+        return;
+    }
+
+    return intlMiddleware(req);
+});
 
 export const config = {
-    matcher: [
-        // root page
-        '/',
-        // any locale but exclude static files, API and _next
-        '/:locale((?!api|_next|.*\\..*).*)',
-    ],
+    matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

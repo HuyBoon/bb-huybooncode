@@ -16,7 +16,6 @@ export default function Home() {
                 <div id="#">
                     <Hero />
                 </div>
-
                 <div id="about" className="py-8 xl:py-12 bg-muted/30">
                     <About />
                 </div>
