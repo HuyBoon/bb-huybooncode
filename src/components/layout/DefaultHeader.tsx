@@ -2,8 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import BaseHeader from "./BaseHeader";
+import { Session } from "next-auth";
 
-const DefaultHeader = () => {
+const DefaultHeader = ({ session }: { session: Session | null }) => {
     const t = useTranslations("Navigation");
 
     const navItems = [
@@ -14,7 +15,7 @@ const DefaultHeader = () => {
         { href: "/contact", label: t("contact") },
     ];
 
-    return <BaseHeader navItems={navItems} />;
+    return <BaseHeader navItems={navItems} session={session} />;
 };
 
 export default DefaultHeader;

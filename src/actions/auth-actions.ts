@@ -6,32 +6,32 @@ import connectDB from "@/libs/db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { redirect } from "next/navigation";
 
-// ... imports
-
-export async function authenticate(
-    prevState: any, // Đổi type thành any hoặc định nghĩa interface State
-    formData: FormData
-) {
-    // 1. Lấy email ra trước để trả về nếu lỗi
+export async function authenticate(prevState: any, formData: FormData) {
     const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    let userRole = "user";
 
     try {
-        await signIn("credentials", {
-            email: email,
-            password: formData.get("password"),
-            redirectTo: "/admin",
-            redirect: true,
+        const result = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
         });
+
+        await connectDB();
+        const user = await User.findOne({ email }).select("role");
+        if (user) userRole = user.role;
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
                 case "CredentialsSignin":
                     return {
                         message: "Email hoặc mật khẩu không chính xác.",
-                        inputs: { email }, // Trả lại email
+                        inputs: { email },
                     };
-
                 case "CallbackRouteError":
                     const errMessage = error.cause?.err?.message;
                     if (errMessage === "ACCOUNT_LOCKED") {
@@ -45,7 +45,6 @@ export async function authenticate(
                         message: "Đã có lỗi xảy ra khi xác thực.",
                         inputs: { email },
                     };
-
                 default:
                     return {
                         message: "Đã có lỗi hệ thống xảy ra.",
@@ -55,13 +54,18 @@ export async function authenticate(
         }
         throw error;
     }
+
+    if (userRole === "admin" || userRole === "superAdmin") {
+        redirect("/admin");
+    } else {
+        redirect("/dashboard");
+    }
 }
 
 export async function handleSignOut() {
     await signOut({ redirectTo: "/login" });
 }
 
-// --- REGISTER ---
 const RegisterSchema = z
     .object({
         name: z.string().min(2, "Tên phải có ít nhất 2 ký tự"),
@@ -77,12 +81,15 @@ const RegisterSchema = z
 export async function register(prevState: any, formData: FormData) {
     const rawData = Object.fromEntries(formData.entries());
 
-    // 1. Validate
     const validatedFields = RegisterSchema.safeParse(rawData);
     if (!validatedFields.success) {
         return {
             error: validatedFields.error.flatten().fieldErrors,
             message: "Dữ liệu nhập vào không hợp lệ.",
+            inputs: {
+                name: rawData.name as string,
+                email: rawData.email as string,
+            },
         };
     }
 
@@ -93,7 +100,10 @@ export async function register(prevState: any, formData: FormData) {
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return { message: "Email này đã được sử dụng." };
+            return {
+                message: "Email này đã được sử dụng.",
+                inputs: { name, email },
+            };
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -116,11 +126,7 @@ export async function register(prevState: any, formData: FormData) {
         console.error("Register Error:", error);
         return {
             message: "Lỗi hệ thống, vui lòng thử lại sau.",
-
-            inputs: {
-                name: name,
-                email: email,
-            },
+            inputs: { name, email },
         };
     }
 }

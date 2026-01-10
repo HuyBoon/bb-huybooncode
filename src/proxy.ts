@@ -1,10 +1,10 @@
+// src/middleware.ts
 import NextAuth from "next-auth";
 import createMiddleware from "next-intl/middleware";
 import { authConfig } from "./auth.config";
 import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
-
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
@@ -16,16 +16,19 @@ export default auth((req) => {
         nextUrl.pathname.startsWith("/_vercel") ||
         /\.(.*)$/.test(nextUrl.pathname);
 
-    const isAdminRoute = nextUrl.pathname.startsWith("/admin");
+    if (isApiOrStatic) return;
 
+    const isAdminRoute = nextUrl.pathname.startsWith("/admin");
     const isAuthRoute =
         nextUrl.pathname === "/login" ||
         nextUrl.pathname === "/register" ||
         nextUrl.pathname.startsWith("/auth");
-    if (isApiOrStatic || isAdminRoute || isAuthRoute) {
+
+    if (isAdminRoute || isAuthRoute) {
         return;
     }
 
+    // Các trang còn lại (Home, Blog...) thì chạy đa ngôn ngữ
     return intlMiddleware(req);
 });
 

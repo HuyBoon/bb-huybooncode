@@ -20,7 +20,6 @@ export function AdminLayoutWrapper({
             <div
                 className={cn(
                     "flex flex-col w-full transition-all duration-300 ease-in-out",
-
                     isCollapsed ? "md:pl-20" : "md:pl-64"
                 )}
             >

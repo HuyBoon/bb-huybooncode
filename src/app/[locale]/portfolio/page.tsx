@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import About from "@/components/layout/About";
 import Contact from "@/components/layout/Contact";
 import Footer from "@/components/layout/Footer";
@@ -7,10 +8,12 @@ import ProfessionalExperience from "@/components/layout/ProfessionalExperience";
 import Projects from "@/components/layout/Projects";
 import Skills from "@/components/layout/Skills";
 
-export default function Home() {
+export default async function Home() {
+    const session = await auth();
+
     return (
         <>
-            <PortfolioHeader />
+            <PortfolioHeader session={session} />
 
             <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
                 <div id="#">

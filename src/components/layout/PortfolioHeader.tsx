@@ -2,8 +2,9 @@
 
 import { useTranslations } from "next-intl";
 import BaseHeader from "./BaseHeader";
+import { Session } from "next-auth";
 
-const PortfolioHeader = () => {
+const PortfolioHeader = ({ session }: { session: Session | null }) => {
     const t = useTranslations("Navigation");
 
     const navItems = [
@@ -14,7 +15,9 @@ const PortfolioHeader = () => {
         { href: "#contact", label: t("contact") },
     ];
 
-    return <BaseHeader navItems={navItems} showSocials={true} />;
+    return (
+        <BaseHeader navItems={navItems} showSocials={true} session={session} />
+    );
 };
 
 export default PortfolioHeader;

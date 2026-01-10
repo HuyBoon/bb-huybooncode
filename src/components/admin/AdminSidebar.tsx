@@ -16,6 +16,7 @@ import {
     Tag,
     FolderKanban,
     Users2,
+    User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -64,7 +65,10 @@ const sidebarGroups = [
     },
     {
         group: "System",
-        items: [{ icon: Settings, label: "Settings", href: "/admin/settings" }],
+        items: [
+            { icon: Settings, label: "Settings", href: "/admin/settings" },
+            { icon: User, label: "Profile", href: "/admin/profile" },
+        ],
     },
 ];
 

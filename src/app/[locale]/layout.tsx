@@ -9,6 +9,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton";
+import { auth } from "@/auth";
 
 const inter = Inter({
     subsets: ["latin", "vietnamese"],
@@ -25,41 +26,55 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
     title: {
-        template: "%s | HuyBoonCode - Frontend Developer",
-        default:
-            "HuyBoonTech | Frontend Developer & Professional Web Solutions",
+        template: "%s | HuyBoon - Frontend Developer",
+        default: "HuyBoon | Frontend Developer & Web Creator",
     },
     description:
-        "HuyBoonCode là một Frontend Developer chuyên nghiệp với hơn 1 năm kinh nghiệm, chuyên cung cấp các giải pháp thiết kế website, Landing Page và Web App hiện đại, tối ưu SEO.",
+        "HuyBoon - Frontend Developer đam mê tạo ra các website đẹp, nhanh và thân thiện với người dùng. Chuyên Next.js, React, TypeScript, TailwindCSS, Landing Page & Web App hiện đại, tối ưu SEO.",
+
     keywords: [
-        "HuyBoonTech",
+        "HuyBoon",
         "Frontend Developer",
-        "Thiết kế website",
-        "Next.js",
         "React Developer",
-        "Web Solutions",
+        "Next.js Developer",
+        "Thiết kế website",
+        "Landing page",
+        "Web App",
+        "TypeScript",
+        "TailwindCSS",
+        "Developer Việt Nam",
     ],
+
     openGraph: {
-        title: "HuyBoonTech | Professional Web Solutions",
+        title: "HuyBoon | Frontend Developer",
         description:
-            "Chuyên xây dựng các website hoàn hảo, hấp dẫn và hiệu suất cao.",
+            "Tạo ra những website đẹp mắt, nhanh, chuẩn SEO và mang lại trải nghiệm người dùng tuyệt vời.",
         url: "https://huyboon.tech",
-        siteName: "HuyBoonCode",
+        siteName: "HuyBoon",
         images: [
             {
-                url: "/og-image.png",
+                url: "/og-image.png", // nên thay bằng ảnh cá nhân hoặc dự án đẹp của bạn
                 width: 1200,
                 height: 630,
+                alt: "HuyBoon - Frontend Developer Portfolio",
             },
         ],
         locale: "vi_VN",
         type: "website",
     },
+
     twitter: {
         card: "summary_large_image",
-        title: "HuyBoonTech | Frontend Developer",
-        description: "Professional Web Development Services",
+        title: "HuyBoon | Frontend Developer",
+        description:
+            "Xây dựng website hiện đại với Next.js • React • TypeScript",
         images: ["/og-image.png"],
+        creator: "@Huy74", // nếu bạn có twitter/X thì thêm vào, nếu không thì bỏ dòng này
+    },
+
+    // Optional: thêm nếu muốn
+    alternates: {
+        canonical: "https://huyboon.tech",
     },
 };
 
@@ -71,7 +86,7 @@ export default async function LocaleLayout({
     params: Promise<{ locale: string }>;
 }) {
     const { locale } = await params;
-
+    const session = await auth();
     const supportedLocales: readonly ["vi", "en"] = routing.locales;
     const localeRaw = supportedLocales.includes(locale as "vi" | "en")
         ? (locale as "vi" | "en")

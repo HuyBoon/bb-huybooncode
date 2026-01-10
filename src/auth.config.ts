@@ -11,7 +11,6 @@ export const authConfig = {
     },
     providers: [],
     callbacks: {
-        // 1. Map role vào token (Chạy khi login hoặc check session)
         async jwt({ token, user }) {
             if (user) {
                 token.role = (user.role as string) || "user";
@@ -20,7 +19,6 @@ export const authConfig = {
             return token;
         },
 
-        // 2. Map role từ token sang session (Để middleware đọc được)
         async session({ session, token }) {
             if (token && session.user) {
                 session.user.role = token.role as string;
@@ -34,35 +32,44 @@ export const authConfig = {
             const role = auth?.user?.role;
             const path = nextUrl.pathname;
 
-            console.log("MIDDLEWARE CHECK:", {
-                path,
-                email: auth?.user?.email,
-                role: role,
-                isLoggedIn,
-            });
-            // -----------------
-
             const isAdminRoute = path.startsWith("/admin");
             const isAuthRoute =
-                path.startsWith("/auth") ||
                 path === "/login" ||
-                path === "/register";
+                path === "/register" ||
+                path.startsWith("/auth");
+            const isUserDashboard = path.startsWith("/dashboard");
 
             if (isAdminRoute) {
-                if (!isLoggedIn) return false;
+                if (!isLoggedIn) {
+                    const loginUrl = nextUrl.clone();
+                    loginUrl.pathname = "/login";
+                    loginUrl.searchParams.set("callbackUrl", nextUrl.pathname);
+                    return Response.redirect(loginUrl);
+                }
 
-                // Nếu role không đúng -> Đá về trang chủ
                 if (role !== "admin" && role !== "superAdmin") {
-                    return Response.redirect(new URL("/unauthorized", nextUrl));
+                    const unauthorizedUrl = nextUrl.clone();
+                    unauthorizedUrl.pathname = "/unauthorized";
+                    return Response.redirect(unauthorizedUrl);
                 }
                 return true;
             }
 
             if (isAuthRoute && isLoggedIn) {
+                const redirectUrl = nextUrl.clone();
+
                 if (role === "admin" || role === "superAdmin") {
-                    return Response.redirect(new URL("/admin", nextUrl));
+                    redirectUrl.pathname = "/admin";
+                } else {
+                    redirectUrl.pathname = "/dashboard";
                 }
-                return Response.redirect(new URL("/", nextUrl));
+                return Response.redirect(redirectUrl);
+            }
+
+            if (isUserDashboard && !isLoggedIn) {
+                const loginUrl = nextUrl.clone();
+                loginUrl.pathname = "/login";
+                return Response.redirect(loginUrl);
             }
 
             return true;

@@ -52,7 +52,7 @@ export default function Projects() {
             description: t("thuyduong_desc"),
             tech: ["React", "Next.js", "Tailwind"],
             image: "/projects/thuyduongspa.png",
-            demoLink: "https://thuyduongspa.vercel.app/",
+            demoLink: "https://spathuyduong.vn/",
             status: "developing",
         },
         {
@@ -68,7 +68,7 @@ export default function Projects() {
             description: t("mknails_desc"),
             tech: ["React", "TypeScript", "Tailwind"],
             image: "/projects/mknails.png",
-            demoLink: "https://hb-mknails.vercel.app/",
+            demoLink: "https://www.mknailsportdover.com/",
             status: "completed",
         },
         {
@@ -76,7 +76,7 @@ export default function Projects() {
             description: t("varia_desc"),
             tech: ["React", "Next.js", "TypeScript", "Tailwind"],
             image: "/projects/variahotel.png",
-            demoLink: "https://hb-variahotel.vercel.app/vi",
+            demoLink: "https://varia-nine.vercel.app/",
             status: "developing",
         },
     ];
