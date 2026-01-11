@@ -41,11 +41,11 @@ export async function updateSiteSettings(formData: FormData) {
 
         await connectDB();
 
-        const rawData = {
+        // 👇 SỬA TẠI ĐÂY: Thêm ": any" vào sau rawData
+        const rawData: any = {
             siteName: formData.get("siteName"),
             siteDescription: formData.get("siteDescription"),
             contactEmail: formData.get("contactEmail"),
-            // Checkbox trong form html trả về "on" nếu checked, null nếu không
             maintenanceMode: formData.get("maintenanceMode") === "on",
             socials: {
                 github: formData.get("github"),
@@ -54,13 +54,22 @@ export async function updateSiteSettings(formData: FormData) {
             },
         };
 
-        // Update bản ghi đầu tiên tìm thấy, hoặc tạo mới nếu chưa có
+        // --- XỬ LÝ CV ---
+        const cvFile = formData.get("cvFile") as string;
+
+        // Bây giờ bạn có thể gán thoải mái mà không bị lỗi đỏ
+        if (cvFile && cvFile.startsWith("data:application/pdf")) {
+            rawData.cvFile = cvFile;
+            rawData.cvFileName = "HuyBoon_CV.pdf";
+        }
+        // ----------------
+
         await SiteSettings.findOneAndUpdate({}, rawData, {
             upsert: true,
             new: true,
         });
 
-        revalidatePath("/"); // Revalidate toàn bộ site vì setting ảnh hưởng header/footer
+        revalidatePath("/");
         return { success: true, message: "Cập nhật cấu hình thành công!" };
     } catch (error) {
         console.error("Update settings error:", error);

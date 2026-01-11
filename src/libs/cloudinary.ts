@@ -8,7 +8,7 @@ cloudinary.config({
 
 export async function uploadToCloudinary(
     file: File,
-    folder: string = "varia-hotel/rooms"
+    folder: string = "huyboontech/post"
 ) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);

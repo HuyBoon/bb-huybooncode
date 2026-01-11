@@ -44,9 +44,9 @@ export function ProfileCover({
 
             {editable && (
                 <>
-                    {/* Input Color ẩn */}
+                    
                     <input
-                        type="file" // Trick: Input color mặc định UI hơi xấu, ta dùng button trigger
+                        type="file"
                         className="hidden"
                     />
                     <input

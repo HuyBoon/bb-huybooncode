@@ -53,6 +53,7 @@ const sidebarGroups = [
         items: [
             { icon: FolderKanban, label: "Projects", href: "/admin/projects" },
             { icon: FileText, label: "Posts", href: "/admin/post" },
+            { icon: FileText, label: "Categories", href: "/admin/categories" },
             { icon: Briefcase, label: "Experience", href: "/admin/experience" },
         ],
     },

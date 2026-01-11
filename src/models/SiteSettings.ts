@@ -14,6 +14,8 @@ const SiteSettingsSchema = new Schema(
             linkedin: { type: String, default: "" },
             facebook: { type: String, default: "" },
         },
+        cvFile: { type: String, default: "" },
+        cvFileName: { type: String, default: "HuyBoon_CV.pdf" },
     },
     { timestamps: true }
 );

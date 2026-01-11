@@ -13,40 +13,106 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-    CardFooter,
 } from "@/components/ui/card";
 import { updateSiteSettings } from "@/actions/admin-settings-actions";
 import { toast } from "sonner";
-import { Loader2, Save, Globe, Share2, ShieldAlert } from "lucide-react";
-
+import {
+    Loader2,
+    Save,
+    Globe,
+    Share2,
+    ShieldAlert,
+    FileText,
+    UploadCloud,
+    CheckCircle2,
+} from "lucide-react";
 export function AdminSettingsForm({ initialData }: { initialData: any }) {
     const [isPending, startTransition] = useTransition();
-    // State riêng cho switch vì switch của shadcn không dùng name attribute trực tiếp như input native
+    const [cvFile, setCvFile] = useState<string | null>(null);
+
+    const [newFileName, setNewFileName] = useState<string | null>(null);
+
     const [maintenanceMode, setMaintenanceMode] = useState(
         initialData?.maintenanceMode || false
     );
 
-    const handleSubmit = (formData: FormData) => {
-        // Append giá trị của switch vào formData thủ công
-        if (maintenanceMode) {
-            formData.set("maintenanceMode", "on");
-        } else {
-            formData.delete("maintenanceMode");
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.type !== "application/pdf") {
+                toast.error("Vui lòng chỉ chọn file PDF");
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                toast.error("File quá lớn (Max 5MB)");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setCvFile(reader.result as string);
+                setNewFileName(file.name);
+                toast.success(`Đã chọn: ${file.name}`);
+            };
+            reader.readAsDataURL(file);
         }
+    };
+
+    const handleSubmit = (formData: FormData) => {
+        if (maintenanceMode) formData.set("maintenanceMode", "on");
+        else formData.delete("maintenanceMode");
+
+        if (cvFile) formData.set("cvFile", cvFile);
 
         startTransition(async () => {
             const result = await updateSiteSettings(formData);
             if (result.success) {
                 toast.success(result.message);
+                setCvFile(null);
+                setNewFileName(null);
             } else {
                 toast.error(result.error);
             }
         });
     };
 
+    const renderFileStatus = () => {
+        if (newFileName) {
+            return (
+                <div className="flex items-center gap-2 text-green-600 font-medium">
+                    <CheckCircle2 size={16} />
+                    <span>Mới: {newFileName}</span>
+                    <span className="text-xs text-muted-foreground font-normal">
+                        (Chưa lưu)
+                    </span>
+                </div>
+            );
+        }
+
+        if (initialData?.cvFile) {
+            return (
+                <div className="flex flex-col">
+                    <span className="font-medium text-foreground">
+                        {initialData.cvFileName || "HuyBoon_CV.pdf"}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                        Đang sử dụng trên hệ thống
+                    </span>
+                </div>
+            );
+        }
+
+        return (
+            <span className="text-muted-foreground italic">
+                Chưa tải lên file nào
+            </span>
+        );
+    };
+
     return (
         <form action={handleSubmit}>
             <Tabs defaultValue="general" className="w-full space-y-4">
+                {/* ... (TabsList và các phần trên giữ nguyên) ... */}
                 <TabsList>
                     <TabsTrigger value="general" className="gap-2">
                         <Globe size={16} /> Chung
@@ -59,8 +125,8 @@ export function AdminSettingsForm({ initialData }: { initialData: any }) {
                     </TabsTrigger>
                 </TabsList>
 
-                {/* --- TAB: GENERAL --- */}
-                <TabsContent value="general">
+                <TabsContent value="general" className="space-y-4">
+                    {/* ... (Card Thông tin Website giữ nguyên) ... */}
                     <Card>
                         <CardHeader>
                             <CardTitle>Thông tin Website</CardTitle>
@@ -103,9 +169,59 @@ export function AdminSettingsForm({ initialData }: { initialData: any }) {
                             </div>
                         </CardContent>
                     </Card>
+
+                    {/* Card Quản lý CV (ĐÃ UPDATE LOGIC HIỂN THỊ) */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Quản lý CV</CardTitle>
+                            <CardDescription>
+                                File này sẽ được tải xuống khi người dùng bấm
+                                "My CV".
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="flex items-center gap-4 border p-4 rounded-lg bg-muted/20">
+                                <div className="p-3 bg-primary/10 rounded-full text-primary">
+                                    <FileText size={24} />
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-sm font-medium text-muted-foreground mb-1">
+                                        File hiện tại
+                                    </p>
+
+                                    {/* Gọi hàm render logic hiển thị tên file */}
+                                    {renderFileStatus()}
+                                </div>
+                                <div className="relative">
+                                    <input
+                                        type="file"
+                                        id="cv-upload"
+                                        accept="application/pdf"
+                                        className="hidden"
+                                        onChange={handleFileChange}
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() =>
+                                            document
+                                                .getElementById("cv-upload")
+                                                ?.click()
+                                        }
+                                    >
+                                        <UploadCloud className="mr-2 h-4 w-4" />
+                                        {cvFile
+                                            ? "Chọn file khác"
+                                            : "Tải lên / Thay thế"}
+                                    </Button>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </TabsContent>
 
-                {/* --- TAB: SOCIALS --- */}
+                {/* ... (Các Tabs Socials và System giữ nguyên) ... */}
                 <TabsContent value="socials">
                     <Card>
                         <CardHeader>
@@ -182,7 +298,7 @@ export function AdminSettingsForm({ initialData }: { initialData: any }) {
                     </Card>
                 </TabsContent>
 
-                {/* --- SUBMIT BUTTON --- */}
+                {/* Submit Button */}
                 <div className="flex justify-end pt-4">
                     <Button
                         type="submit"
