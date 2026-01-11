@@ -3,13 +3,18 @@
 		"home": "Trang chủ",
 		"services": "Dịch vụ",
 		"projects": "Dự án",
-		"portfolio": "Portfolio",
+		"portfolio": "Hồ sơ năng lực",
 		"blog": "Blog",
 		"contact": "Liên hệ",
 		"about": "Giới thiệu",
 		"skills": "Kỹ năng",
 		"experience": "Kinh nghiệm",
-		"login": "Đăng nhập"
+		"login": "Đăng nhập",
+		"logout": "Đăng xuất",
+		"admin_dashboard": "Quản trị hệ thống",
+		"profile": "Hồ sơ cá nhân",
+		"favorites": "Bài viết đã lưu",
+		"settings": "Cài đặt"
 	},
 	"HomePage": {
 		"Hero": {

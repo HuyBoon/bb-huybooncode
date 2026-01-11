@@ -1,76 +1,63 @@
 import { auth } from "@/auth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, BookOpen, Clock } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ProfileCover } from "@/components/user/ProfileCover";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import connectDB from "@/libs/db";
+import User from "@/models/User";
+
+interface UserProfile {
+    _id: string;
+    name: string;
+    email: string;
+    image?: string;
+    coverImage?: string;
+    role: string;
+    provider: string;
+    createdAt: Date;
+}
+
+async function getUserProfile(userId: string): Promise<UserProfile | null> {
+    await connectDB();
+    const user = (await User.findById(userId)
+        .select("name email role image createdAt provider coverImage")
+        .lean()) as unknown as UserProfile | null;
+    return user;
+}
 
 export default async function UserDashboardPage() {
     const session = await auth();
 
-    const stats = [
-        {
-            label: "Bài viết đã lưu",
-            value: "12",
-            icon: Heart,
-            color: "text-red-500",
-        },
-        {
-            label: "Đã đọc",
-            value: "45",
-            icon: BookOpen,
-            color: "text-blue-500",
-        },
-        {
-            label: "Thời gian học",
-            value: "120h",
-            icon: Clock,
-            color: "text-orange-500",
-        },
-    ];
+    if (!session?.user) return null;
+    const user = await getUserProfile(session.user.id);
+
+    if (!user) return <div>User not found</div>;
 
     return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">
-                    Chào mừng trở lại, {session?.user?.name}! 👋
-                </h1>
-                <p className="text-muted-foreground">
-                    Đây là nơi bạn quản lý các bài viết đã lưu và thông tin cá
-                    nhân.
-                </p>
-            </div>
+        <div className="space-y-8 animate-in fade-in zoom-in duration-500">
+            <Card className="text-center p-0 overflow-hidden border-border/50 shadow-sm">
+                {/* Truyền mã màu xuống component */}
+                <ProfileCover initialCover={user.coverImage} editable={true} />
 
-            {/* Thẻ thống kê nhanh */}
-            <div className="grid gap-4 md:grid-cols-3">
-                {stats.map((stat) => (
-                    <Card key={stat.label}>
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-sm font-medium">
-                                {stat.label}
-                            </CardTitle>
-                            <stat.icon className={`h-4 w-4 ${stat.color}`} />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">
-                                {stat.value}
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+                <div className="px-6 pb-6 -mt-10 relative z-10">
+                    <Avatar className="w-20 h-20 border-4 border-background mx-auto shadow-md">
+                        <AvatarImage
+                            src={user.image || ""}
+                            className="object-cover"
+                        />
+                        <AvatarFallback className="text-xl font-bold bg-background">
+                            {user.name?.[0]?.toUpperCase()}
+                        </AvatarFallback>
+                    </Avatar>
 
-            {/* Danh sách bài viết mới lưu (Placeholder) */}
-            <div className="grid gap-4">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Bài viết đã lưu gần đây</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-sm text-muted-foreground">
-                            Bạn chưa có bài viết nào được lưu. Hãy khám phá Blog
-                            nhé!
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
+                    <div className="mt-3 space-y-1">
+                        <h3 className="font-bold text-lg">{user.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                            {user.email}
+                        </p>
+                    </div>
+                </div>
+            </Card>
         </div>
     );
 }

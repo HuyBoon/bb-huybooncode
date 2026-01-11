@@ -147,6 +147,7 @@ const BaseHeader = ({
                         locale={locale}
                         toggleLanguage={toggleLanguage}
                         showSocials={showSocials}
+                        session={session}
                     />
                 </nav>
             </motion.div>

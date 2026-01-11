@@ -22,7 +22,6 @@ interface UserNavProps {
 
 export function UserNav({ session }: UserNavProps) {
     const t = useTranslations("Navigation");
-
     const user = session?.user;
 
     if (!session) {
@@ -31,7 +30,7 @@ export function UserNav({ session }: UserNavProps) {
                 variant="default"
                 size="sm"
                 asChild
-                className="rounded-full px-4 h-9"
+                className="hidden lg:flex rounded-full px-4 h-9"
             >
                 <Link href="/login">{t("login")}</Link>
             </Button>
@@ -75,25 +74,25 @@ export function UserNav({ session }: UserNavProps) {
                 {(user?.role === "admin" || user?.role === "superAdmin") && (
                     <DropdownMenuItem asChild>
                         <Link href="/admin" className="cursor-pointer">
-                            <LayoutDashboard className="mr-2 h-4 w-4" /> Admin
-                            Dashboard
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
+                            {t("admin_dashboard")}
                         </Link>
                     </DropdownMenuItem>
                 )}
 
                 <DropdownMenuItem asChild>
                     <Link href="/profile" className="cursor-pointer">
-                        <User className="mr-2 h-4 w-4" /> Hồ sơ cá nhân
+                        <User className="mr-2 h-4 w-4" /> {t("profile")}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="/favorites" className="cursor-pointer">
-                        <Heart className="mr-2 h-4 w-4" /> Bài viết đã lưu
+                        <Heart className="mr-2 h-4 w-4" /> {t("favorites")}
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="/settings" className="cursor-pointer">
-                        <Settings className="mr-2 h-4 w-4" /> Cài đặt
+                        <Settings className="mr-2 h-4 w-4" /> {t("settings")}
                     </Link>
                 </DropdownMenuItem>
 
@@ -102,7 +101,7 @@ export function UserNav({ session }: UserNavProps) {
                     className="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer"
                     onClick={() => handleSignOut()}
                 >
-                    <LogOut className="mr-2 h-4 w-4" /> Đăng xuất
+                    <LogOut className="mr-2 h-4 w-4" /> {t("logout")}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

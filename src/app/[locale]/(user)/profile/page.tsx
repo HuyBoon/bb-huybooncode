@@ -21,13 +21,13 @@ import { ShieldCheck } from "lucide-react";
 import { ChangePasswordForm } from "@/components/user/ChangePasswordForm";
 
 interface UserProfile {
-    _id: string; // Mongoose luôn trả về _id trừ khi tắt nó
+    _id: string;
     name: string;
     email: string;
     image?: string;
     role: string;
     provider: string;
-    createdAt: Date; // lean() trả về Date object của JS
+    createdAt: Date;
 }
 async function getUserProfile(userId: string): Promise<UserProfile | null> {
     await connectDB();
@@ -41,7 +41,7 @@ async function getUserProfile(userId: string): Promise<UserProfile | null> {
 
 export default async function ProfilePage() {
     const session = await auth();
-    // Fetch dữ liệu mới nhất từ DB thay vì tin tưởng Session cũ
+
     const user = await getUserProfile(session?.user?.id as string);
 
     if (!user) return null;
@@ -59,9 +59,8 @@ export default async function ProfilePage() {
             <Separator />
 
             <div className="flex flex-col md:flex-row gap-8">
-                {/* --- Cột trái: Thông tin tóm tắt --- */}
                 <aside className="w-full md:w-70 flex flex-col gap-6">
-                    <Card className="text-center overflow-hidden">
+                    <Card className="text-center overflow-hidden p-0">
                         <div className="h-24 bg-primary/10 w-full"></div>
                         <div className="px-6 pb-6 -mt-10">
                             <Avatar className="w-20 h-20 border-4 border-background mx-auto">
@@ -98,7 +97,6 @@ export default async function ProfilePage() {
                     <div className="text-sm text-muted-foreground px-2">
                         <p>Tham gia từ:</p>
                         <p className="font-medium text-foreground">
-                            {/* @ts-ignore: createdAt tồn tại trong Mongoose doc */}
                             {new Date(user.createdAt).toLocaleDateString(
                                 "vi-VN"
                             )}
@@ -106,7 +104,6 @@ export default async function ProfilePage() {
                     </div>
                 </aside>
 
-                {/* --- Cột phải: Form chỉnh sửa --- */}
                 <div className="flex-1">
                     <Tabs defaultValue="general" className="w-full">
                         <TabsList className="mb-4">
@@ -116,7 +113,6 @@ export default async function ProfilePage() {
                             <TabsTrigger value="security">Bảo mật</TabsTrigger>
                         </TabsList>
 
-                        {/* Tab 1: Đổi tên */}
                         <TabsContent value="general">
                             <ProfileForm
                                 user={{ name: user.name, email: user.email }}
@@ -124,7 +120,6 @@ export default async function ProfilePage() {
                         </TabsContent>
 
                         <TabsContent value="security">
-                            {/* Kiểm tra Provider, nếu là credentials mới cho hiện form */}
                             {user.provider === "credentials" ? (
                                 <ChangePasswordForm />
                             ) : (

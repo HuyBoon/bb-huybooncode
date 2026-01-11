@@ -7,6 +7,7 @@ export interface IUser extends Document {
     password?: string;
     role: "superAdmin" | "admin" | "user";
     image?: string;
+    coverImage?: string;
     provider: "credentials" | "google" | "github";
     isActive: boolean;
     emailVerified?: Date;
@@ -42,6 +43,7 @@ const UserSchema = new Schema<IUser>(
             type: String,
             default: "",
         },
+        coverImage: { type: String, default: "" },
         provider: {
             type: String,
             enum: ["credentials", "google", "github"],

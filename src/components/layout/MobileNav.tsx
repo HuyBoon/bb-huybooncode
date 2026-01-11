@@ -2,8 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, LogIn } from "lucide-react"; // Import LogIn icon
 import { Dispatch, SetStateAction } from "react";
+import { Button } from "@/components/ui/button"; // Import Button
+import { useTranslations } from "next-intl"; // Import Hook dịch
+import { Session } from "next-auth"; // Import type Session
 
 interface NavItem {
     label: string;
@@ -16,7 +19,8 @@ interface MobileNavProps {
     navItems: NavItem[];
     locale: string;
     toggleLanguage: () => void;
-    showSocials: boolean; // <--- THÊM DÒNG NÀY
+    showSocials: boolean;
+    session: Session | null; // <--- THÊM PROP NÀY
 }
 
 export function MobileNav({
@@ -25,8 +29,11 @@ export function MobileNav({
     navItems,
     locale,
     toggleLanguage,
-    showSocials, // <--- NHẬN PROP NÀY
+    showSocials,
+    session, // <--- NHẬN PROP
 }: MobileNavProps) {
+    const t = useTranslations("Navigation"); // Hook dịch
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -51,6 +58,25 @@ export function MobileNav({
                             ))}
                         </div>
 
+                        {/* --- KHU VỰC LOGIN CHO MOBILE --- */}
+                        {!session && (
+                            <div className="px-2 pb-2">
+                                <Button
+                                    className="w-full rounded-lg font-bold"
+                                    size="lg"
+                                    asChild
+                                >
+                                    <Link
+                                        href="/login"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        <LogIn className="mr-2 h-4 w-4" />{" "}
+                                        {t("login")}
+                                    </Link>
+                                </Button>
+                            </div>
+                        )}
+
                         {/* Footer: Language & Socials */}
                         <div className="pt-4 border-t border-border/50 flex items-center justify-between px-2">
                             <button
@@ -60,7 +86,6 @@ export function MobileNav({
                                 Ngôn ngữ: {locale.toUpperCase()}
                             </button>
 
-                            {/* --- LOGIC HIỂN THỊ SOCIALS --- */}
                             {showSocials && (
                                 <div className="flex gap-4">
                                     <Link

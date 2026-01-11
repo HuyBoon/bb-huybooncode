@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { NotificationList } from "@/components/user/NotificationList";
 import { Separator } from "@/components/ui/separator";
 import { NotificationItem } from "@/types";
+import { ComingSoon } from "@/components/shared/ComingSoon";
 
 // Mock Data (Sau này thay bằng DB fetch)
 async function getNotifications(userId: string): Promise<NotificationItem[]> {
@@ -62,9 +63,7 @@ export default async function NotificationsPage() {
                     Xem lại lịch sử hoạt động và tin tức từ hệ thống.
                 </p>
             </div>
-            <Separator />
-
-            <NotificationList initialData={notifications} />
+            <ComingSoon />
         </div>
     );
 }

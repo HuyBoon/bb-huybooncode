@@ -25,7 +25,6 @@ export async function removeFavorite(postId: string) {
 
         await connectDB();
 
-        // Giả sử trong User Model có field 'savedPosts' là mảng ObjectId
         await User.findByIdAndUpdate(session.user.id, {
             $pull: { savedPosts: postId },
         });
@@ -126,5 +125,31 @@ export async function changePassword(formData: FormData) {
     } catch (error) {
         console.error("Change password error:", error);
         return { error: "Lỗi hệ thống, vui lòng thử lại." };
+    }
+}
+
+export async function updateCoverColor(color: string) {
+    try {
+        const session = await auth();
+        if (!session) return { error: "Unauthorized" };
+
+        // Validate mã Hex cơ bản (Bắt đầu bằng #, dài 4 hoặc 7 ký tự)
+        const hexRegex = /^#([0-9A-F]{3}){1,2}$/i;
+        if (!hexRegex.test(color)) {
+            return { error: "Mã màu không hợp lệ." };
+        }
+
+        await connectDB();
+
+        // Lưu mã màu vào trường coverImage (tái sử dụng trường cũ)
+        await User.findByIdAndUpdate(session.user.id, {
+            coverImage: color,
+        });
+
+        revalidatePath("/profile"); // Hoặc trang dashboard của bạn
+        return { success: true, message: "Đã đổi màu ảnh bìa!" };
+    } catch (error) {
+        console.error("Update cover color error:", error);
+        return { error: "Lỗi hệ thống." };
     }
 }

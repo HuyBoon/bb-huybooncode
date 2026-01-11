@@ -3,6 +3,26 @@
 import { ArrowUp } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
+function throttle(fn: Function, limit: number) {
+    let lastRun = 0;
+    let timeout: NodeJS.Timeout | null = null;
+
+    return function (...args: any[]) {
+        const now = Date.now();
+
+        if (now - lastRun >= limit) {
+            lastRun = now;
+            fn(...args);
+        } else {
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                lastRun = Date.now();
+                fn(...args);
+            }, limit - (now - lastRun));
+        }
+    };
+}
+
 const ScrollToTopButton: React.FC = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [scrollPercent, setScrollPercent] = useState<number>(0);
@@ -21,18 +41,18 @@ const ScrollToTopButton: React.FC = () => {
         const docHeight =
             document.documentElement.scrollHeight -
             document.documentElement.clientHeight;
-        const scrolled = (scrollTop / docHeight) * 100;
+        const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
 
         setScrollPercent(scrolled);
         setIsVisible(scrollTop > 300);
     };
 
-    // Add scroll event listener when component mounts
     useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
+        const throttledScroll = throttle(handleScroll, 100);
+
+        window.addEventListener("scroll", throttledScroll, { passive: true });
+
+        return () => window.removeEventListener("scroll", throttledScroll);
     }, []);
 
     // SVG circle dimensions
@@ -42,7 +62,7 @@ const ScrollToTopButton: React.FC = () => {
     return (
         <>
             <button
-                className={`fixed bottom-5 right-5 z-[1000] p-2 rounded-full bg-[#5ec4e1] text-black shadow-md transition-opacity duration-300 flex items-center justify-center cursor-pointer ${
+                className={`fixed bottom-5 right-5 z-1000 p-2 rounded-full bg-[#5ec4e1] text-black shadow-md transition-opacity duration-300 flex items-center justify-center cursor-pointer ${
                     isVisible ? "opacity-100" : "opacity-0"
                 }`}
                 onClick={scrollToTop}
@@ -59,7 +79,7 @@ const ScrollToTopButton: React.FC = () => {
                         cy="24"
                         r={radius}
                         fill="none"
-                        stroke="#ddd"
+                        stroke="#267ff4"
                         strokeWidth="2"
                     />
                     <circle
@@ -67,7 +87,7 @@ const ScrollToTopButton: React.FC = () => {
                         cy="24"
                         r={radius}
                         fill="none"
-                        stroke="#3c0046"
+                        stroke="#135e3d"
                         strokeWidth="2"
                         strokeDasharray={circumference}
                         strokeDashoffset={strokeOffset}

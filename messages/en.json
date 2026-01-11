@@ -9,7 +9,12 @@
 		"about": "About",
 		"skills": "Skills",
 		"experience": "Experience",
-		"login": "Login"
+		"login": "Login",
+		"logout": "Logout",
+		"admin_dashboard": "Admin Dashboard",
+		"profile": "Profile",
+		"favorites": "Saved Posts",
+		"settings": "Settings"
 	},
 	"HomePage": {
 		"Hero": {
