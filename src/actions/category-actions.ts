@@ -5,64 +5,68 @@ import connectDB from "@/libs/db";
 import Category from "@/models/Category";
 import { auth } from "@/auth";
 import slugify from "slugify";
+import { IActionResponse, IPlainCategory } from "@/types/backend";
 
-export async function getCategories() {
+export async function getCategories(
+    type?: "post" | "project" | "template"
+): Promise<IActionResponse<IPlainCategory[]>> {
     try {
         await connectDB();
+        const query: any = {};
+        if (type) {
+            query.type = type;
+        }
 
-        const categories = await Category.find({})
+        const categories = await Category.find(query)
             .populate("parent", "name")
             .sort({ createdAt: -1 })
             .lean();
 
-        const serialized = categories.map((cat: any) => ({
+        const serialized: IPlainCategory[] = categories.map((cat: any) => ({
             ...cat,
             _id: cat._id.toString(),
+            type: cat.type || "post",
             parent: cat.parent
                 ? { ...cat.parent, _id: cat.parent._id.toString() }
                 : null,
             ancestors: cat.ancestors.map((id: any) => id.toString()),
             createdAt: cat.createdAt.toString(),
             updatedAt: cat.updatedAt.toString(),
+            children: [],
         }));
 
         return { success: true, data: serialized };
     } catch (error) {
-        console.error("Get categories error:", error);
-        return { success: false, error: "Lỗi lấy danh mục" };
+        return { success: false, error: "Lỗi lấy danh mục", data: [] };
     }
 }
 
-// 2. Tạo Category mới
 export async function createCategory(formData: FormData) {
     try {
-        const session = await auth();
-        // if (session?.user?.role !== "admin") return { error: "Unauthorized" };
+        // const session = await auth(); // Uncomment nếu cần check quyền
 
         await connectDB();
 
         const name = formData.get("name") as string;
         const description = formData.get("description") as string;
-        const parentId = formData.get("parent") as string; // ID của cha (nếu có)
+        const parentId = formData.get("parent") as string;
         const status = formData.get("status") as string;
+
+        const type = (formData.get("type") as string) || "post";
 
         if (!name) return { error: "Tên danh mục là bắt buộc" };
 
-        // Tạo Slug
         let slug = slugify(name, { lower: true, strict: true, locale: "vi" });
 
-        // Check trùng slug
         const exists = await Category.findOne({ slug });
         if (exists) slug = `${slug}-${Date.now()}`;
 
-        // Logic tính toán Cây phân cấp (Hierarchy)
         let ancestors: string[] = [];
         let depth = 0;
 
         if (parentId && parentId !== "root") {
             const parentCat = await Category.findById(parentId);
             if (parentCat) {
-                // Ancestors của con = Ancestors của cha + ID của cha
                 ancestors = [...parentCat.ancestors, parentCat._id];
                 depth = parentCat.depth + 1;
             }
@@ -72,6 +76,7 @@ export async function createCategory(formData: FormData) {
             name,
             slug,
             description,
+            type,
             status: status || "active",
             parent: parentId && parentId !== "root" ? parentId : null,
             ancestors,
@@ -87,13 +92,10 @@ export async function createCategory(formData: FormData) {
         return { error: "Lỗi khi tạo danh mục" };
     }
 }
-// ... (Các hàm cũ giữ nguyên)
 
-// 4. Cập nhật Category
 export async function updateCategory(formData: FormData) {
     try {
-        const session = await auth();
-        // Check quyền admin...
+        // const session = await auth();
 
         await connectDB();
 
@@ -103,18 +105,15 @@ export async function updateCategory(formData: FormData) {
         const parentId = formData.get("parent") as string;
         const status = formData.get("status") as string;
 
+        // 👇 Lấy type cần update
+        const type = formData.get("type") as string;
+
         if (!id || !name) return { error: "Thiếu thông tin bắt buộc" };
 
-        // Logic check: Không được chọn chính nó làm cha
         if (parentId === id) {
             return { error: "Không thể chọn chính danh mục này làm cha." };
         }
 
-        // Cập nhật lại Slug (nếu muốn đổi tên thì đổi slug luôn, hoặc giữ nguyên tùy business)
-        // Ở đây mình giữ slug cũ để tránh hỏng link SEO, chỉ update các info khác
-        // Nếu muốn update slug thì dùng slugify lại.
-
-        // Tính toán lại ancestors và depth nếu đổi cha
         let ancestors: string[] = [];
         let depth = 0;
 
@@ -130,6 +129,7 @@ export async function updateCategory(formData: FormData) {
             name,
             description,
             status,
+            type, // 👈 Cập nhật type
             parent: parentId && parentId !== "root" ? parentId : null,
             ancestors,
             depth,
@@ -143,12 +143,11 @@ export async function updateCategory(formData: FormData) {
     }
 }
 
-// 3. Xóa Category
+// 4. Xóa Category
 export async function deleteCategory(id: string) {
     try {
         await connectDB();
 
-        // Kiểm tra xem có danh mục con không?
         const hasChildren = await Category.findOne({ parent: id });
         if (hasChildren) {
             return {
@@ -156,9 +155,8 @@ export async function deleteCategory(id: string) {
             };
         }
 
-        // Kiểm tra xem có bài viết nào dùng danh mục này không? (Optional)
-        // const hasBlogs = await Blog.findOne({ category: id });
-        // if (hasBlogs) return { error: "Danh mục đang có bài viết, không thể xóa." };
+        // TODO: Kiểm tra xem có Project/Post/Template nào đang dùng không?
+        // Cái này nâng cao, tạm thời chưa chặn để dễ dev
 
         await Category.findByIdAndDelete(id);
         revalidatePath("/admin/categories");

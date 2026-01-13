@@ -29,12 +29,11 @@ import {
     Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation"; // Để refresh search param
+import { useRouter } from "next/navigation"; 
 import { toggleUserRole, deleteUser } from "@/actions/admin-users-actions";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 
-// Định nghĩa kiểu dữ liệu User cho Client
 interface UserType {
     _id: string;
     name: string;
@@ -54,8 +53,6 @@ export function UsersTable({ initialUsers }: UsersTableProps) {
     const [searchTerm, setSearchTerm] = useState("");
     const [isPending, startTransition] = useTransition();
 
-    // Lọc client-side (để nhanh) hoặc gọi lại server nếu data lớn
-    // Ở đây mình làm client-side filtering cho mượt với list nhỏ/vừa
     const filteredUsers = users.filter(
         (user) =>
             user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -67,7 +64,7 @@ export function UsersTable({ initialUsers }: UsersTableProps) {
             const result = await toggleUserRole(userId, currentRole);
             if (result.success) {
                 toast.success(result.message);
-                // Optimistic Update (Cập nhật giao diện ngay lập tức)
+
                 setUsers((prev) =>
                     prev.map((u) =>
                         u._id === userId

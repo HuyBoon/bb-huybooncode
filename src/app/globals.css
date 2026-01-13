@@ -1,11 +1,11 @@
 @import "tailwindcss";
-
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
     --background: #ffffff;
+    --background-editor: #fff;
     --foreground: #1d2939;
 
     --card: #ffffff;
@@ -49,11 +49,19 @@
     --sidebar-accent-foreground: #1d2939;
     --sidebar-border: #e2e8f0;
     --sidebar-ring: #01a1bd;
+
+    --ck-color-base-background: var(--background);
+    --ck-color-base-border: var(--border);
+    --ck-color-text: var(--foreground);
+    --ck-color-base-foreground: var(--background-editor);
+    --ck-color-toolbar-background: var(--background);
+    --ck-color-toolbar-border: var(--border);
 }
 
 .dark {
     --background: #1d2939;
     --foreground: #f8fafc;
+    --background-editor: #1d2939;
 
     --card: #020817;
     --card-foreground: #f8fafc;
@@ -94,6 +102,27 @@
     --sidebar-accent-foreground: #f8fafc;
     --sidebar-border: #1e293b;
     --sidebar-ring: #06b6d4;
+
+    --ck-color-base-background: var(--background-editor); /* Nền editor */
+    --ck-color-base-border: var(--border);
+    --ck-color-text: var(--foreground);
+    --ck-color-base-foreground: var(--background-editor);
+
+    /* Toolbar (thanh công cụ) cũng cần tối */
+    --ck-color-toolbar-background: var(--background);
+    --ck-color-toolbar-border: var(--border);
+
+    /* Màu của nút bấm trên toolbar khi hover/active */
+    --ck-color-button-default-hover-background: var(--accent);
+    --ck-color-button-default-active-background: var(--accent);
+    --ck-color-button-on-background: var(--accent);
+    --ck-color-button-on-hover-background: var(--accent);
+
+    /* Màu dropdown panel */
+    --ck-color-list-background: var(--popover);
+    --ck-color-list-button-hover-background: var(--accent);
+    --ck-color-panel-background: var(--popover);
+    --ck-color-panel-border: var(--border);
 }
 
 @theme inline {
@@ -102,6 +131,7 @@
         monospace;
 
     --color-background: var(--background);
+    --color-background-editor: var(--background-editor);
     --color-foreground: var(--foreground);
     --color-card: var(--card);
     --color-card-foreground: var(--card-foreground);
@@ -229,4 +259,126 @@
     h6 {
         @apply font-mono font-bold tracking-tight;
     }
+}
+
+.ck-editor__editable:not(.ck-editor__nested-editable) {
+    min-height: 500px !important;
+    background-color: var(--background-editor) !important;
+    color: var(--foreground) !important;
+}
+.ck.ck-editor__main > .ck-editor__editable.ck-focused {
+    background-color: var(--background-editor) !important;
+    border-color: var(--ring) !important;
+    box-shadow: 0 0 0 2px var(--ring) !important;
+}
+.ck-content > blockquote,
+.ck-content > dl,
+.ck-content > dd,
+.ck-content > h1,
+.ck-content > h2,
+.ck-content > h3,
+.ck-content > h4,
+.ck-content > h5,
+.ck-content > h6,
+.ck-content > hr,
+.ck-content > figure,
+.ck-content > p,
+.ck-content > pre,
+.ck-content > ul,
+.ck-content > ol,
+.ck-content > table {
+    all: revert;
+}
+
+.ck-content h1 {
+    @apply text-3xl md:text-4xl font-bold mt-12 mb-6 leading-tight text-foreground;
+}
+
+.ck-content h2 {
+    @apply text-2xl md:text-3xl font-bold mt-10 mb-5 leading-snug text-foreground;
+}
+
+.ck-content h3 {
+    @apply text-xl md:text-2xl font-bold mt-9 mb-4 text-foreground;
+}
+
+/* Các đoạn văn bản chính */
+.ck-content p {
+    @apply text-base leading-relaxed my-6 text-foreground;
+}
+
+/* Link: Giữ primary nhưng sáng hơn ở dark mode nhờ biến --primary đã đổi */
+.ck-content a {
+    @apply text-primary underline underline-offset-4 hover:text-primary/80 transition-colors font-medium;
+}
+
+/* Blockquote: Tăng độ tương phản cho dark mode */
+.ck-content blockquote {
+    @apply border-l-4 border-primary/50 pl-7 py-5 my-10 italic text-base md:text-lg font-medium rounded-r-lg;
+    @apply bg-primary/5 text-foreground/80;
+
+    .dark & {
+        @apply bg-primary/10 text-foreground/90 border-primary;
+    }
+}
+
+/* Danh sách */
+.ck-content ul,
+.ck-content ol {
+    @apply my-6 pl-6 space-y-3 text-foreground/85;
+}
+
+.ck-content ul > li::marker {
+    @apply text-primary;
+}
+
+/* Hình ảnh và Caption */
+.ck-content figure {
+    @apply my-10 -mx-4 md:mx-0;
+}
+
+.ck-content img {
+    @apply rounded-lg shadow-lg my-10 mx-auto max-w-full h-auto border border-border/30;
+    width: 100% !important;
+    height: auto !important;
+}
+
+.ck-content figcaption {
+    @apply text-center text-xs md:text-sm text-muted-foreground mt-3 italic;
+}
+
+/* Code Blocks: Điều chỉnh màu nền để nổi bật trên nền tối */
+.ck-content pre {
+    @apply bg-muted/70 rounded-lg p-4 md:p-5 my-8 overflow-x-auto text-xs md:text-sm font-mono shadow-inner border border-border/50;
+    .dark & {
+        @apply bg-muted/30 border-border;
+    }
+}
+
+.ck-content code {
+    @apply bg-muted/60 px-1.5 py-0.5 rounded text-xs md:text-sm font-mono text-foreground;
+    .dark & {
+        @apply bg-accent/50;
+    }
+}
+
+/* Đường kẻ ngang */
+.ck-content hr {
+    @apply my-12 border-t border-border/30;
+    .dark & {
+        @apply border-border/10;
+    }
+}
+
+/* Editor UI Fixes */
+.ck-balloon-panel {
+    z-index: 999999 !important;
+}
+
+.ck.ck-balloon-panel {
+    z-index: 9999 !important;
+}
+
+.ck-editor__editable {
+    z-index: 1 !important;
 }

@@ -8,6 +8,7 @@ export interface ICategory extends Document {
     parent?: string | null;
     ancestors?: string[];
     depth?: number;
+    type: "post" | "project" | "template";
     createdAt: Date;
     updatedAt: Date;
 }
@@ -27,20 +28,24 @@ const CategorySchema = new Schema<ICategory>(
             ref: "Category",
             default: null,
         },
-        // Lưu mảng các ID cha để dễ truy vấn (Pattern: Materialized Path)
+
         ancestors: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "Category",
             },
         ],
+        type: {
+            type: String,
+            enum: ["post", "project", "template"],
+            default: "post",
+            index: true,
+        },
         depth: { type: Number, default: 0 },
     },
     { timestamps: true }
 );
 
-// Index để tìm kiếm nhanh
-CategorySchema.index({ slug: 1 });
 CategorySchema.index({ parent: 1 });
 
 const Category =

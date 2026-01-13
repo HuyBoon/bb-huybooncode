@@ -102,7 +102,7 @@ export default function ProjectPage() {
             id: 7,
             title: "Blog Platform",
             key: "blog",
-            tech: ["React", "Firebase", "Tailwind"],
+            tech: ["Next.js", "Firebase", "Tailwind"],
             image: "/projects/blog.png",
             demoLink: "https://mereview.vercel.app/vi",
             status: "completed",

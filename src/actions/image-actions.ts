@@ -7,16 +7,14 @@ export async function uploadImageToCloudinary(formData: FormData) {
         const file = formData.get("file") as File;
         if (!file) return { error: "Không tìm thấy file" };
 
-        // Chuyển File sang Buffer để upload qua SDK
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        // Upload stream
         const result = await new Promise<any>((resolve, reject) => {
             cloudinary.uploader
                 .upload_stream(
                     {
-                        folder: "huybooncode-blog",
+                        folder: "huybooncode-post",
                         resource_type: "image",
                     },
                     (error, result) => {

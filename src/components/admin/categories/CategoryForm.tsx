@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +27,7 @@ interface CategoryFormProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     existingCategories: any[];
-    editingCategory?: any | null; // Dữ liệu danh mục đang sửa (nếu có)
+    editingCategory?: any | null;
 }
 
 export function CategoryForm({
@@ -37,12 +37,14 @@ export function CategoryForm({
     editingCategory,
 }: CategoryFormProps) {
     const [isPending, startTransition] = useTransition();
-
-    const isEditMode = !!editingCategory;
+    const isEditMode = !!editingCategory?._id;
 
     const handleSubmit = (formData: FormData) => {
         if (isEditMode) {
             formData.append("id", editingCategory._id);
+        }
+        if (!isEditMode && editingCategory?.type) {
+            formData.append("type", editingCategory.type);
         }
 
         startTransition(async () => {
@@ -51,7 +53,7 @@ export function CategoryForm({
 
             if (result.success) {
                 toast.success(result.message);
-                onOpenChange(false); // Đóng form
+                onOpenChange(false);
             } else {
                 toast.error(result.error);
             }
@@ -73,6 +75,7 @@ export function CategoryForm({
                 </SheetHeader>
 
                 <form action={handleSubmit} className="space-y-6 mt-6">
+                    {/* 1. Tên danh mục */}
                     <div className="space-y-2">
                         <Label htmlFor="name">
                             Tên danh mục <span className="text-red-500">*</span>
@@ -86,11 +89,38 @@ export function CategoryForm({
                         />
                     </div>
 
+                    {/* 2. Loại danh mục (MỚI THÊM) */}
+                    <div className="space-y-2">
+                        <Label htmlFor="type">Loại danh mục</Label>
+                        <Select
+                            name="type"
+                            defaultValue={editingCategory?.type || "post"}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Chọn loại" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="post">
+                                    Bài viết (Blog)
+                                </SelectItem>
+                                <SelectItem value="project">
+                                    Dự án (Portfolio)
+                                </SelectItem>
+                                <SelectItem value="template">
+                                    Giao diện (Template)
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <p className="text-[10px] text-muted-foreground">
+                            Xác định danh mục này dùng cho phần nào của website.
+                        </p>
+                    </div>
+
+                    {/* 3. Danh mục cha */}
                     <div className="space-y-2">
                         <Label htmlFor="parent">Danh mục cha</Label>
                         <Select
                             name="parent"
-                            // Nếu đang edit thì lấy parent._id, nếu không có parent thì là root
                             defaultValue={
                                 editingCategory?.parent?._id || "root"
                             }
@@ -103,7 +133,6 @@ export function CategoryForm({
                                     -- Là danh mục gốc --
                                 </SelectItem>
                                 {existingCategories.map((cat) => (
-                                    // Không cho phép chọn chính nó làm cha khi đang edit
                                     <SelectItem
                                         key={cat._id}
                                         value={cat._id}
@@ -112,10 +141,16 @@ export function CategoryForm({
                                             cat._id === editingCategory._id
                                         }
                                     >
-                                        {/* Hiển thị phân cấp */}
-                                        {Array(cat.depth)
-                                            .fill("— ")
-                                            .join("")}{" "}
+                                        <span className="text-muted-foreground/50 mr-2">
+                                            [
+                                            {cat.type === "post"
+                                                ? "Blog"
+                                                : cat.type === "project"
+                                                ? "Project"
+                                                : "Template"}
+                                            ]
+                                        </span>
+                                        {Array(cat.depth).fill("— ").join("")}{" "}
                                         {cat.name}
                                     </SelectItem>
                                 ))}
@@ -123,6 +158,7 @@ export function CategoryForm({
                         </Select>
                     </div>
 
+                    {/* 4. Mô tả */}
                     <div className="space-y-2">
                         <Label htmlFor="description">Mô tả</Label>
                         <Textarea
@@ -133,6 +169,7 @@ export function CategoryForm({
                         />
                     </div>
 
+                    {/* 5. Trạng thái */}
                     <div className="space-y-2">
                         <Label htmlFor="status">Trạng thái</Label>
                         <Select
