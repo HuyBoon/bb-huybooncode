@@ -5,31 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Github, Linkedin, Mail, MapPin } from "lucide-react";
-import { FaReact, FaNodeJs, FaDocker } from "react-icons/fa";
-import {
-    SiNextdotjs,
-    SiTailwindcss,
-    SiMongodb,
-    SiTypescript,
-    SiFirebase,
-} from "react-icons/si";
 
-const techStack = [
-    { icon: <FaReact />, color: "text-[#61DAFB]", name: "React" },
-    {
-        icon: <SiNextdotjs />,
-        color: "text-black dark:text-white",
-        name: "Next.js",
-    },
-    { icon: <SiTypescript />, color: "text-[#3178C6]", name: "TypeScript" },
-    { icon: <SiTailwindcss />, color: "text-[#06B6D4]", name: "Tailwind" },
-    { icon: <FaNodeJs />, color: "text-[#339933]", name: "Node.js" },
-    { icon: <SiMongodb />, color: "text-[#47A248]", name: "MongoDB" },
-    { icon: <FaDocker />, color: "text-[#2496ED]", name: "Docker" },
-    { icon: <SiFirebase />, color: "text-[#FFCA28]", name: "Firebase" },
-];
+// 👇 IMPORT TỪ CONFIG
+import { TECH_STACK_LIST, PROFILE } from "@/config/site";
 
-// Animation
+// Animation variants (Giữ nguyên)
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
@@ -67,37 +47,29 @@ export default function HomePage() {
                     </motion.p>
                 </div>
 
-                {/* --- BENTO GRID LAYOUT --- */}
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
                     className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 auto-rows-[180px]"
                 >
-                    {/* 1. AVATAR CARD (2x2) */}
+                    {/* AVATAR CARD */}
                     <motion.div
                         variants={itemVariants}
                         whileHover={hoverScale}
                         className="md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden group border border-border bg-card shadow-sm"
                     >
                         <Image
-                            src="/huybooncode.png"
-                            alt="HuyBoon"
+                            src={PROFILE.avatar} // 👇 Dùng từ Config
+                            alt={PROFILE.name}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                             priority
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
-                        {/* <div className="absolute bottom-6 left-6 text-white">
-                            <p className="text-sm font-mono mb-1 text-primary">
-                                {t("role")}
-                            </p>
-                            <h2 className="text-2xl font-bold">
-                                {t("slogan")}
-                            </h2>
-                        </div> */}
                     </motion.div>
 
+                    {/* LOCATION CARD */}
                     <motion.div
                         variants={itemVariants}
                         whileHover={hoverScale}
@@ -115,20 +87,21 @@ export default function HomePage() {
                         </p>
                     </motion.div>
 
+                    {/* CONTACT CARD */}
                     <motion.div
                         variants={itemVariants}
                         className="rounded-3xl border border-border bg-card p-6 flex flex-col justify-between shadow-sm"
                     >
                         <div className="flex gap-2">
                             <Link
-                                href="https://github.com/HuyBoon"
+                                href={PROFILE.social.github}
                                 target="_blank"
                                 className="p-3 bg-muted rounded-2xl hover:bg-[#333] hover:text-white transition-colors flex-1 flex items-center justify-center text-foreground"
                             >
                                 <Github size={24} />
                             </Link>
                             <Link
-                                href="https://www.linkedin.com/in/huy-boon-438168398/"
+                                href={PROFILE.social.linkedin}
                                 target="_blank"
                                 className="p-3 bg-muted rounded-2xl hover:bg-[#0077b5] hover:text-white transition-colors flex-1 flex items-center justify-center text-foreground"
                             >
@@ -136,13 +109,14 @@ export default function HomePage() {
                             </Link>
                         </div>
                         <Link
-                            href="mailto:huybooncode74@gmail.com"
+                            href={`mailto:${PROFILE.email}`}
                             className="mt-2 w-full py-3 bg-foreground text-background rounded-2xl font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
                         >
                             <Mail size={16} /> {t("contact_me")}
                         </Link>
                     </motion.div>
 
+                    {/* TECH STACK MARQUEE CARD */}
                     <motion.div
                         variants={itemVariants}
                         className="md:col-span-2 rounded-3xl border border-border bg-card flex flex-col justify-center overflow-hidden relative shadow-sm group"
@@ -160,18 +134,22 @@ export default function HomePage() {
                                     duration: 15,
                                 }}
                             >
-                                {[...techStack, ...techStack].map((tech, i) => (
-                                    <div
-                                        key={i}
-                                        className="flex flex-col items-center gap-2 group/icon min-w-15"
-                                    >
+                                {/* 👇 DÙNG LIST TỪ CONFIG (nhân đôi mảng để chạy loop) */}
+                                {[...TECH_STACK_LIST, ...TECH_STACK_LIST].map(
+                                    (tech, i) => (
                                         <div
-                                            className={`text-4xl ${tech.color} transform group-hover/icon:scale-110 transition-transform duration-300`}
+                                            key={i}
+                                            className="flex flex-col items-center gap-2 group/icon min-w-15"
                                         >
-                                            {tech.icon}
+                                            <div
+                                                className={`text-4xl ${tech.color} transform group-hover/icon:scale-110 transition-transform duration-300`}
+                                            >
+                                                {/* Render Icon component */}
+                                                <tech.icon />
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    )
+                                )}
                             </motion.div>
                         </div>
                     </motion.div>

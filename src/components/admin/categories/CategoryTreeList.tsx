@@ -19,11 +19,10 @@ import { deleteCategory } from "@/actions/category-actions";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Import Tabs
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { CategoryForm } from "./CategoryForm";
 
-// Helper chuyển Flat Array -> Tree Array
 function buildTree(items: any[]) {
     const rootItems: any[] = [];
     const lookup: Record<string, any> = {};
@@ -42,7 +41,6 @@ function buildTree(items: any[]) {
     return rootItems;
 }
 
-// Component render từng dòng (đã tách ra để tái sử dụng)
 const CategoryRow = ({
     node,
     level = 0,
@@ -148,7 +146,6 @@ const CategoryRow = ({
     );
 };
 
-// Component nội dung của từng Tab
 const CategoryTabContent = ({
     data,
     onEdit,
@@ -221,10 +218,10 @@ export function CategoryTreeList({ data }: { data: any[] }) {
         setIsSheetOpen(true);
     };
 
-    // Phân loại dữ liệu
     const postCategories = data.filter((c) => c.type === "post" || !c.type);
     const projectCategories = data.filter((c) => c.type === "project");
     const templateCategories = data.filter((c) => c.type === "template");
+    const studyCategories = data.filter((c) => c.type === "study");
 
     return (
         <>
@@ -243,7 +240,7 @@ export function CategoryTreeList({ data }: { data: any[] }) {
                 onValueChange={setActiveTab}
                 className="w-full"
             >
-                <TabsList className="grid w-full grid-cols-3 max-w-md">
+                <TabsList className="grid w-full grid-cols-4 max-w-lg">
                     <TabsTrigger
                         value="post"
                         className="flex items-center gap-2"
@@ -280,6 +277,18 @@ export function CategoryTreeList({ data }: { data: any[] }) {
                             {templateCategories.length}
                         </Badge>
                     </TabsTrigger>
+                    <TabsTrigger
+                        value="study"
+                        className="flex items-center gap-2"
+                    >
+                        <Layout size={16} /> Study
+                        <Badge
+                            variant="secondary"
+                            className="ml-1 px-1.5 h-5 text-[10px]"
+                        >
+                            {studyCategories.length}
+                        </Badge>
+                    </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="post">
@@ -301,6 +310,13 @@ export function CategoryTreeList({ data }: { data: any[] }) {
                 <TabsContent value="template">
                     <CategoryTabContent
                         data={templateCategories}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
+                </TabsContent>
+                <TabsContent value="study">
+                    <CategoryTabContent
+                        data={studyCategories}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />

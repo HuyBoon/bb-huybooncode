@@ -5,7 +5,6 @@ import connectDB from "@/libs/db";
 import Contact from "@/models/Contact";
 import { auth } from "@/auth";
 
-// Lấy danh sách tin nhắn
 export async function getMessages() {
     try {
         await connectDB();
@@ -17,11 +16,8 @@ export async function getMessages() {
             return { error: "Unauthorized" };
         }
 
-        const messages = await Contact.find({})
-            .sort({ createdAt: -1 }) // Tin mới nhất lên đầu
-            .lean();
+        const messages = await Contact.find({}).sort({ createdAt: -1 }).lean();
 
-        // Serialize dữ liệu
         const serializedMessages = messages.map((msg: any) => ({
             ...msg,
             _id: msg._id.toString(),
@@ -35,10 +31,9 @@ export async function getMessages() {
         return { error: "Lỗi khi tải tin nhắn." };
     }
 }
-
-// Xóa tin nhắn
 export async function deleteMessage(id: string) {
     try {
+        await requireAdmin();
         await connectDB();
         await Contact.findByIdAndDelete(id);
         revalidatePath("/admin/messages");

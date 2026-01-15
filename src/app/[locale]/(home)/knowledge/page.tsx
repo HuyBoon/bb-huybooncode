@@ -4,7 +4,6 @@ import { getCategories } from "@/actions/category-actions";
 import { PostCard } from "@/components/knowledge/PostCard";
 import { CategorySidebar } from "@/components/knowledge/CategorySidebar";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import SearchForm from "@/components/knowledge/SearchForm";
 import PaginationControl from "@/components/knowledge/PaginationControl";
@@ -24,20 +23,19 @@ export default async function KnowledgePage({
     const page = Number(params.page) || 1;
     const query = params.query || "";
     const categorySlug = params.category || "";
-
-    // Fetch dữ liệu song song (Parallel Data Fetching)
     const [postsRes, categoriesRes] = await Promise.all([
-        getPosts(page, 6, query, categorySlug), // Lấy 9 bài mỗi trang
-        getCategories(),
+        getPosts(page, 6, query, categorySlug),
+        getCategories("post"),
     ]);
 
     const posts = postsRes.success && postsRes.data ? postsRes.data : [];
+
     const categories =
         categoriesRes.success && categoriesRes.data ? categoriesRes.data : [];
     const pagination = postsRes.pagination;
 
     return (
-        <div className="container mx-auto px-4 py-12 max-w-7xl">
+        <div className="container mx-auto px-4 py-12 max-w-7xl min-h-screen">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                 <div>
@@ -58,7 +56,7 @@ export default async function KnowledgePage({
             <Separator className="mb-10" />
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-                {/* --- LEFT: POST LIST (3/4) --- */}
+                {/* Cột trái: Danh sách bài viết */}
                 <div className="lg:col-span-3">
                     {posts.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -79,28 +77,39 @@ export default async function KnowledgePage({
                     )}
 
                     {pagination && pagination.totalPages > 1 && (
-                        <PaginationControl
-                            currentPage={pagination.page}
-                            totalPages={pagination.totalPages}
-                        />
+                        <div className="mt-10">
+                            <PaginationControl
+                                currentPage={pagination.page}
+                                totalPages={pagination.totalPages}
+                            />
+                        </div>
                     )}
                 </div>
 
+                {/* Cột phải: Sidebar Danh mục & Subscribe */}
                 <div className="lg:col-span-1">
-                    <div className="sticky top-24">
+                    <div className="sticky top-24 space-y-8">
+                        {/* Sidebar chỉ hiển thị danh mục type="post" */}
                         <CategorySidebar categories={categories} />
 
-                        <div className="mt-8 p-4 bg-primary/5 rounded-lg border border-primary/10">
+                        {/* Box đăng ký nhận tin */}
+                        <div className="p-5 bg-card rounded-xl border shadow-xs">
                             <h4 className="font-bold text-sm mb-2 text-primary">
                                 Đăng ký nhận tin
                             </h4>
-                            <p className="text-xs text-muted-foreground mb-3">
+                            <p className="text-xs text-muted-foreground mb-4">
                                 Nhận bài viết mới nhất qua email hàng tuần.
+                                Không spam.
                             </p>
-                            <Input
-                                placeholder="Email của bạn..."
-                                className="h-8 text-xs mb-2"
-                            />
+                            <div className="space-y-2">
+                                <Input
+                                    placeholder="Email của bạn..."
+                                    className="h-9 text-sm"
+                                />
+                                <button className="w-full h-9 bg-primary text-primary-foreground text-xs font-bold rounded-md hover:bg-primary/90 transition-colors">
+                                    Đăng ký ngay
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

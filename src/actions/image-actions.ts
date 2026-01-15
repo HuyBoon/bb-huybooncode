@@ -38,6 +38,7 @@ export async function uploadImageToCloudinary(formData: FormData) {
 
 export async function deleteImageFromCloudinary(public_id: string) {
     try {
+        await requireAdmin();
         if (!public_id) return { error: "Thiếu public_id" };
 
         await cloudinary.uploader.destroy(public_id);

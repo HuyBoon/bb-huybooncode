@@ -4,17 +4,12 @@ import { revalidatePath } from "next/cache";
 import connectDB from "@/libs/db";
 import User from "@/models/User";
 import { auth } from "@/auth";
+import { requireAdmin } from "@/lib/auth-guards";
 
 export async function getAllUsers(query: string = "") {
     try {
+        await requireAdmin();
         await connectDB();
-        const session = await auth();
-        if (
-            session?.user?.role !== "admin" &&
-            session?.user?.role !== "superAdmin"
-        ) {
-            return { error: "Unauthorized" };
-        }
 
         const searchCondition = query
             ? {
@@ -44,11 +39,10 @@ export async function getAllUsers(query: string = "") {
     }
 }
 
-// Đổi quyền (Role)
 export async function toggleUserRole(userId: string, currentRole: string) {
     try {
         const session = await auth();
-        // Check quyền Admin chặn ở Server
+
         if (
             session?.user?.role !== "admin" &&
             session?.user?.role !== "superAdmin"
@@ -56,7 +50,6 @@ export async function toggleUserRole(userId: string, currentRole: string) {
             return { error: "Bạn không có quyền thực hiện hành động này." };
         }
 
-        // Không cho phép tự đổi quyền của chính mình
         if (session?.user?.id === userId) {
             return { error: "Không thể tự thay đổi quyền của chính mình." };
         }

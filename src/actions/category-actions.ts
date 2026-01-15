@@ -6,9 +6,10 @@ import Category from "@/models/Category";
 import { auth } from "@/auth";
 import slugify from "slugify";
 import { IActionResponse, IPlainCategory } from "@/types/backend";
+import { requireAdmin } from "@/lib/auth-guards";
 
 export async function getCategories(
-    type?: "post" | "project" | "template"
+    type?: "post" | "project" | "template" | "study"
 ): Promise<IActionResponse<IPlainCategory[]>> {
     try {
         await connectDB();
@@ -43,8 +44,7 @@ export async function getCategories(
 
 export async function createCategory(formData: FormData) {
     try {
-        // const session = await auth(); // Uncomment nếu cần check quyền
-
+        await requireAdmin();
         await connectDB();
 
         const name = formData.get("name") as string;
@@ -95,7 +95,7 @@ export async function createCategory(formData: FormData) {
 
 export async function updateCategory(formData: FormData) {
     try {
-        // const session = await auth();
+        await requireAdmin();
 
         await connectDB();
 
@@ -105,7 +105,6 @@ export async function updateCategory(formData: FormData) {
         const parentId = formData.get("parent") as string;
         const status = formData.get("status") as string;
 
-        // 👇 Lấy type cần update
         const type = formData.get("type") as string;
 
         if (!id || !name) return { error: "Thiếu thông tin bắt buộc" };
@@ -129,7 +128,7 @@ export async function updateCategory(formData: FormData) {
             name,
             description,
             status,
-            type, // 👈 Cập nhật type
+            type,
             parent: parentId && parentId !== "root" ? parentId : null,
             ancestors,
             depth,
@@ -143,9 +142,9 @@ export async function updateCategory(formData: FormData) {
     }
 }
 
-// 4. Xóa Category
 export async function deleteCategory(id: string) {
     try {
+        await requireAdmin();
         await connectDB();
 
         const hasChildren = await Category.findOne({ parent: id });
@@ -154,9 +153,6 @@ export async function deleteCategory(id: string) {
                 error: "Không thể xóa danh mục này vì nó đang chứa danh mục con.",
             };
         }
-
-        // TODO: Kiểm tra xem có Project/Post/Template nào đang dùng không?
-        // Cái này nâng cao, tạm thời chưa chặn để dễ dev
 
         await Category.findByIdAndDelete(id);
         revalidatePath("/admin/categories");

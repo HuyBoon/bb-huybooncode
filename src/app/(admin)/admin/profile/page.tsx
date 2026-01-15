@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShieldCheck, KeyRound, UserCog } from "lucide-react";
 import { ChangePasswordForm } from "@/components/user/ChangePasswordForm";
 
-// Định nghĩa kiểu dữ liệu để tránh lỗi TS
 interface AdminData {
     _id: string;
     name: string;
@@ -51,9 +50,8 @@ export default async function AdminProfilePage() {
             <Separator />
 
             <div className="flex flex-col lg:flex-row gap-8">
-                {/* --- CỘT TRÁI: THẺ THÔNG TIN --- */}
                 <aside className="w-full lg:w-[320px] flex flex-col gap-6">
-                    <Card className="overflow-hidden border-primary/20 shadow-sm">
+                    <Card className="overflow-hidden border-primary/20 shadow-sm p-0">
                         <div className="h-32 bg-linear-to-r from-primary/20 via-primary/10 to-background"></div>
                         <div className="px-6 pb-6 -mt-12 relative">
                             <Avatar className="w-24 h-24 border-4 border-background shadow-md">

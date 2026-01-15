@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import connectDB from "@/libs/db";
 import SiteSettings from "@/models/SiteSettings";
-import { auth } from "@/auth";
+import { requireAdmin } from "@/lib/auth-guards";
 
 export async function getSiteSettings() {
     try {
@@ -31,17 +31,9 @@ export async function getSiteSettings() {
 
 export async function updateSiteSettings(formData: FormData) {
     try {
-        const session = await auth();
-        if (
-            session?.user?.role !== "admin" &&
-            session?.user?.role !== "superAdmin"
-        ) {
-            return { error: "Unauthorized" };
-        }
+        await requireAdmin();
 
         await connectDB();
-
-        // 👇 SỬA TẠI ĐÂY: Thêm ": any" vào sau rawData
         const rawData: any = {
             siteName: formData.get("siteName"),
             siteDescription: formData.get("siteDescription"),
@@ -54,15 +46,11 @@ export async function updateSiteSettings(formData: FormData) {
             },
         };
 
-        // --- XỬ LÝ CV ---
         const cvFile = formData.get("cvFile") as string;
-
-        // Bây giờ bạn có thể gán thoải mái mà không bị lỗi đỏ
         if (cvFile && cvFile.startsWith("data:application/pdf")) {
             rawData.cvFile = cvFile;
             rawData.cvFileName = "HuyBoon_CV.pdf";
         }
-        // ----------------
 
         await SiteSettings.findOneAndUpdate({}, rawData, {
             upsert: true,

@@ -10,6 +10,7 @@ import {
 } from "@/actions/image-actions";
 import { IActionResponse, IPlainProject } from "@/types/backend";
 import slugify from "slugify";
+import { requireAdmin } from "@/lib/auth-guards";
 
 // 1. Get Projects
 export async function getProjects(
@@ -20,7 +21,7 @@ export async function getProjects(
 ): Promise<IActionResponse<IPlainProject[]>> {
     try {
         await connectDB();
-        const _init = Category; // Fix lazy load
+        const _init = Category;
 
         const skip = (page - 1) * limit;
         const query: any = {};
@@ -75,8 +76,6 @@ export async function getProjects(
         return { success: false, data: [] };
     }
 }
-
-// 2. Get Project By ID
 export async function getProjectById(
     id: string
 ): Promise<IActionResponse<IPlainProject>> {
@@ -106,14 +105,14 @@ export async function getProjectById(
     }
 }
 
-// 3. Create Project
 export async function createProject(
     formData: FormData,
-    description: string, // HTML content
+    description: string,
     thumbnailData: { url: string; public_id: string },
     galleryData: { url: string; public_id: string }[]
 ) {
     try {
+        await requireAdmin();
         await connectDB();
 
         const title = formData.get("title") as string;
@@ -125,7 +124,6 @@ export async function createProject(
         const repoUrl = formData.get("repoUrl") as string;
         const isFeatured = formData.get("isFeatured") === "true";
 
-        // Tech Stack
         const techStackRaw = formData.get("techStack") as string;
         const techStack = techStackRaw
             ? techStackRaw
@@ -172,8 +170,6 @@ export async function createProject(
         return { error: "Lỗi khi tạo dự án" };
     }
 }
-
-// 4. Update Project
 export async function updateProject(
     formData: FormData,
     description: string,
@@ -181,6 +177,7 @@ export async function updateProject(
     newGalleryImages: { url: string; public_id: string }[]
 ) {
     try {
+        await requireAdmin();
         await connectDB();
         const id = formData.get("id") as string;
         const oldProject = await Project.findById(id);
@@ -193,10 +190,6 @@ export async function updateProject(
                   .map((t) => t.trim())
                   .filter(Boolean)
             : [];
-
-        // Lấy danh sách public_id của ảnh gallery cũ muốn giữ lại (nếu có logic xóa ảnh lẻ)
-        // Ở đây mình làm đơn giản: Giữ ảnh cũ + Thêm ảnh mới
-        // Nếu muốn xóa ảnh cũ, cần 1 logic gửi danh sách deletedImages lên
 
         const updateData: any = {
             title: formData.get("title"),
@@ -212,7 +205,6 @@ export async function updateProject(
             description,
         };
 
-        // Handle Thumbnail Update
         if (thumbnailData) {
             if (oldProject.thumbnail?.public_id) {
                 await deleteImageFromCloudinary(oldProject.thumbnail.public_id);
@@ -223,7 +215,6 @@ export async function updateProject(
             };
         }
 
-        // Handle Gallery Update (Append New Images)
         if (newGalleryImages.length > 0) {
             const currentGallery = oldProject.gallery || [];
             const newImagesFormatted = newGalleryImages.map((img) => ({
@@ -241,18 +232,18 @@ export async function updateProject(
     }
 }
 
-// 5. Delete Project
 export async function deleteProject(id: string) {
     try {
+        await requireAdmin();
+
         await connectDB();
         const project = await Project.findById(id);
         if (!project) return { error: "Không tìm thấy" };
 
-        // Xóa thumbnail
         if (project.thumbnail?.public_id) {
             await deleteImageFromCloudinary(project.thumbnail.public_id);
         }
-        // Xóa gallery
+
         if (project.gallery && project.gallery.length > 0) {
             for (const img of project.gallery) {
                 if (img.public_id)
@@ -267,19 +258,19 @@ export async function deleteProject(id: string) {
         return { error: "Lỗi xóa dự án" };
     }
 }
-
-// 6. Delete Single Image from Gallery (Optional Utility)
 export async function deleteProjectGalleryImage(
     projectId: string,
     publicId: string
 ) {
     try {
+        await requireAdmin();
+
         await connectDB();
         await deleteImageFromCloudinary(publicId);
         await Project.findByIdAndUpdate(projectId, {
             $pull: { gallery: { public_id: publicId } },
         });
-        revalidatePath(`/admin/projects/${projectId}`); // Revalidate trang edit
+        revalidatePath(`/admin/projects/${projectId}`);
         return { success: true };
     } catch (error) {
         return { error: "Lỗi xóa ảnh" };

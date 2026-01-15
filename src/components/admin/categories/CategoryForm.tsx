@@ -109,6 +109,9 @@ export function CategoryForm({
                                 <SelectItem value="template">
                                     Giao diện (Template)
                                 </SelectItem>
+                                <SelectItem value="study">
+                                    Khóa học (Study)
+                                </SelectItem>
                             </SelectContent>
                         </Select>
                         <p className="text-[10px] text-muted-foreground">
@@ -147,7 +150,9 @@ export function CategoryForm({
                                                 ? "Blog"
                                                 : cat.type === "project"
                                                 ? "Project"
-                                                : "Template"}
+                                                : cat.type === "template"
+                                                ? "Templage"
+                                                : "Study"}
                                             ]
                                         </span>
                                         {Array(cat.depth).fill("— ").join("")}{" "}

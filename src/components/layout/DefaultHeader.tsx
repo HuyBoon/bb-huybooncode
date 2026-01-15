@@ -11,7 +11,6 @@ const DefaultHeader = ({ session }: { session: Session | null }) => {
         { href: "/services", label: t("services") },
         { href: "/projects", label: t("projects") },
         { href: "/portfolio", label: t("portfolio") },
-        // { href: "/blog", label: t("blog") },
         // { href: "/knowledge", label: t("knowledge") },
         { href: "/contact", label: t("contact") },
     ];

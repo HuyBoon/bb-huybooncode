@@ -5,14 +5,11 @@ import Post from "@/models/Post";
 import Project from "@/models/Project";
 import WebTemplate from "@/models/WebTemplate";
 import Category from "@/models/Category";
-// import Order from "@/models/Order"; // Chưa có
-// import Contact from "@/models/Contact"; // Chưa có
 
 export async function getDashboardStats() {
     try {
         await connectDB();
 
-        // Chạy song song để tối ưu tốc độ
         const [
             totalPosts,
             totalProjects,

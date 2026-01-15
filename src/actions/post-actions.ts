@@ -8,8 +8,8 @@ import { auth } from "@/auth";
 import slugify from "slugify";
 import { deleteImageFromCloudinary } from "@/actions/image-actions";
 import { IActionResponse, IPlainPost } from "@/types/backend";
+import { requireAdmin } from "@/lib/auth-guards";
 
-// 1. Lấy danh sách Post
 export async function getPosts(
     page = 1,
     limit = 6,
@@ -166,24 +166,21 @@ export async function getPostBySlug(
     }
 }
 
-// 3. Tạo Post mới
 export async function createPost(
     formData: FormData,
     content: string,
     thumbnailData: { url: string; public_id: string }
 ) {
     try {
-        const session = await auth();
+        const user = await requireAdmin();
         await connectDB();
 
-        // ... Lấy dữ liệu form
         const title = formData.get("title") as string;
         const descriptions = formData.get("descriptions") as string;
         const categoryId = formData.get("category") as string;
         const status = formData.get("status") as string;
         const lessionIdRaw = formData.get("lessionId");
 
-        // ... Xử lý tags
         const tagsRaw = formData.get("tags") as string;
         const tags = tagsRaw
             ? tagsRaw
@@ -192,7 +189,6 @@ export async function createPost(
                   .filter(Boolean)
             : [];
 
-        // ... Xử lý slug
         let slug = formData.get("slug") as string;
         if (!slug) {
             slug = slugify(title, { lower: true, strict: true, locale: "vi" });
@@ -200,12 +196,8 @@ export async function createPost(
         const existingPost = await Post.findOne({ slug });
         if (existingPost) slug = `${slug}-${Date.now()}`;
 
-        // ... Xử lý timeRead
         const wordCount = content.replace(/<[^>]*>?/gm, "").length;
         const readTime = Math.ceil(wordCount / 200) + " min read";
-
-        // Validate Category (Tùy chọn: Đảm bảo categoryId gửi lên là type 'post')
-        // Tuy nhiên, ở Frontend (PostForm) bạn đã lọc danh mục type='post' rồi nên ở đây có thể bỏ qua để tối ưu performance.
 
         const newPost = new Post({
             title,
@@ -221,7 +213,7 @@ export async function createPost(
             lessionId: lessionIdRaw ? Number(lessionIdRaw) : undefined,
             timeRead: readTime,
             status: status || "draft",
-            author: session?.user?.name || "Admin",
+            author: user.name || "Admin",
             publishedDate: status === "published" ? new Date() : undefined,
         });
 

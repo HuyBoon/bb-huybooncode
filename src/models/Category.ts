@@ -8,7 +8,7 @@ export interface ICategory extends Document {
     parent?: string | null;
     ancestors?: string[];
     depth?: number;
-    type: "post" | "project" | "template";
+    type: "post" | "project" | "template" | "study";
     createdAt: Date;
     updatedAt: Date;
 }
@@ -37,7 +37,7 @@ const CategorySchema = new Schema<ICategory>(
         ],
         type: {
             type: String,
-            enum: ["post", "project", "template"],
+            enum: ["post", "project", "template", "study"],
             default: "post",
             index: true,
         },

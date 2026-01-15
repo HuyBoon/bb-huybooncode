@@ -29,7 +29,6 @@ export async function removeFavorite(postId: string) {
             $pull: { savedPosts: postId },
         });
 
-        // Refresh lại trang để cập nhật UI
         revalidatePath("/favorites");
         return {
             success: true,
@@ -133,7 +132,6 @@ export async function updateCoverColor(color: string) {
         const session = await auth();
         if (!session) return { error: "Unauthorized" };
 
-        // Validate mã Hex cơ bản (Bắt đầu bằng #, dài 4 hoặc 7 ký tự)
         const hexRegex = /^#([0-9A-F]{3}){1,2}$/i;
         if (!hexRegex.test(color)) {
             return { error: "Mã màu không hợp lệ." };
@@ -141,12 +139,11 @@ export async function updateCoverColor(color: string) {
 
         await connectDB();
 
-        // Lưu mã màu vào trường coverImage (tái sử dụng trường cũ)
         await User.findByIdAndUpdate(session.user.id, {
             coverImage: color,
         });
 
-        revalidatePath("/profile"); // Hoặc trang dashboard của bạn
+        revalidatePath("/profile");
         return { success: true, message: "Đã đổi màu ảnh bìa!" };
     } catch (error) {
         console.error("Update cover color error:", error);

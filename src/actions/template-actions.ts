@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import connectDB from "@/libs/db";
-import WebTemplate from "@/models/WebTemplate"; // Đảm bảo đã tạo model này
+import WebTemplate from "@/models/WebTemplate";
 import Category from "@/models/Category";
 import {
     uploadImageToCloudinary,
@@ -10,8 +10,8 @@ import {
 } from "@/actions/image-actions";
 import { IActionResponse, IPlainWebTemplate } from "@/types/backend";
 import slugify from "slugify";
+import { requireAdmin } from "@/lib/auth-guards";
 
-// 1. Get Templates
 export async function getTemplates(
     page = 1,
     limit = 10,
@@ -72,8 +72,6 @@ export async function getTemplates(
         return { success: false, data: [] };
     }
 }
-
-// 2. Get Template By ID
 export async function getTemplateById(
     id: string
 ): Promise<IActionResponse<IPlainWebTemplate>> {
@@ -101,8 +99,6 @@ export async function getTemplateById(
         return { error: "Lỗi hệ thống" };
     }
 }
-
-// 3. Create Template
 export async function createTemplate(
     formData: FormData,
     description: string,
@@ -110,6 +106,7 @@ export async function createTemplate(
     screenshotsData: { url: string; public_id: string }[]
 ) {
     try {
+        await requireAdmin();
         await connectDB();
 
         const name = formData.get("name") as string;
@@ -173,6 +170,7 @@ export async function updateTemplate(
     newScreenshots: { url: string; public_id: string }[]
 ) {
     try {
+        await requireAdmin();
         await connectDB();
         const id = formData.get("id") as string;
         const oldTemplate = await WebTemplate.findById(id);
@@ -229,10 +227,9 @@ export async function updateTemplate(
         return { error: "Lỗi cập nhật" };
     }
 }
-
-// 5. Delete Template
 export async function deleteTemplate(id: string) {
     try {
+        await requireAdmin();
         await connectDB();
         const template = await WebTemplate.findById(id);
         if (!template) return { error: "Không tìm thấy" };
@@ -254,12 +251,12 @@ export async function deleteTemplate(id: string) {
     }
 }
 
-// 6. Delete Single Screenshot
 export async function deleteTemplateScreenshot(
     templateId: string,
     publicId: string
 ) {
     try {
+        await requireAdmin();
         await connectDB();
         await deleteImageFromCloudinary(publicId);
         await WebTemplate.findByIdAndUpdate(templateId, {
