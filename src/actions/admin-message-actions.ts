@@ -3,18 +3,13 @@
 import { revalidatePath } from "next/cache";
 import connectDB from "@/libs/db";
 import Contact from "@/models/Contact";
-import { auth } from "@/auth";
+import { requireAdmin } from "@/lib/auth-guards";
 
 export async function getMessages() {
     try {
+        await requireAdmin();
+
         await connectDB();
-        const session = await auth();
-        if (
-            session?.user?.role !== "admin" &&
-            session?.user?.role !== "superAdmin"
-        ) {
-            return { error: "Unauthorized" };
-        }
 
         const messages = await Contact.find({}).sort({ createdAt: -1 }).lean();
 
@@ -31,11 +26,14 @@ export async function getMessages() {
         return { error: "Lỗi khi tải tin nhắn." };
     }
 }
+
 export async function deleteMessage(id: string) {
     try {
         await requireAdmin();
+
         await connectDB();
         await Contact.findByIdAndDelete(id);
+
         revalidatePath("/admin/messages");
         return { success: true, message: "Đã xóa tin nhắn." };
     } catch (error) {
@@ -43,14 +41,16 @@ export async function deleteMessage(id: string) {
     }
 }
 
-// Đánh dấu đã đọc/chưa đọc
 export async function toggleMessageReadStatus(
     id: string,
     currentStatus: boolean
 ) {
     try {
+        await requireAdmin();
+
         await connectDB();
         await Contact.findByIdAndUpdate(id, { isRead: !currentStatus });
+
         revalidatePath("/admin/messages");
         return { success: true };
     } catch (error) {

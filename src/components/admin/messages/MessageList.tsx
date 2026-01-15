@@ -27,7 +27,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
-// Định nghĩa kiểu dữ liệu cho Message (nếu chưa có file types riêng)
 interface MessageType {
     _id: string;
     name: string;
@@ -43,9 +42,7 @@ export function MessageList({ initialMessages }: { initialMessages: any[] }) {
     const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
     const [isPending, startTransition] = useTransition();
 
-    // 1. Nhóm tin nhắn theo Email và Lọc theo Search
     const threads = useMemo(() => {
-        // Bước A: Lọc tin nhắn trước
         const filtered = messages.filter(
             (msg) =>
                 msg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -53,7 +50,6 @@ export function MessageList({ initialMessages }: { initialMessages: any[] }) {
                 msg.message.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
-        // Bước B: Nhóm theo Email
         const groups: Record<string, MessageType[]> = {};
         filtered.forEach((msg) => {
             if (!groups[msg.email]) {
@@ -62,39 +58,28 @@ export function MessageList({ initialMessages }: { initialMessages: any[] }) {
             groups[msg.email].push(msg);
         });
 
-        // Bước C: Chuyển về dạng mảng và Sắp xếp theo tin nhắn mới nhất
         return Object.entries(groups)
             .map(([email, msgs]) => {
-                // Sắp xếp tin trong nhóm theo thời gian (Mới nhất nằm dưới cùng - giống chat)
                 msgs.sort(
                     (a, b) =>
                         new Date(a.createdAt).getTime() -
                         new Date(b.createdAt).getTime()
                 );
 
-                const latestMsg = msgs[msgs.length - 1]; // Tin mới nhất để hiển thị preview
+                const latestMsg = msgs[msgs.length - 1];
                 const unreadCount = msgs.filter((m) => !m.isRead).length;
 
                 return {
                     email,
-                    name: latestMsg.name, // Lấy tên từ tin mới nhất
+                    name: latestMsg.name,
                     messages: msgs,
                     latestMsg,
                     unreadCount,
                     lastActive: new Date(latestMsg.createdAt).getTime(),
                 };
             })
-            .sort((a, b) => b.lastActive - a.lastActive); // Thread mới nhất lên đầu
+            .sort((a, b) => b.lastActive - a.lastActive);
     }, [messages, searchTerm]);
-
-    // Tự động chọn thread đầu tiên nếu chưa chọn gì (trên Desktop)
-    /* useEffect(() => {
-        if (!selectedEmail && threads.length > 0 && window.innerWidth >= 768) {
-             setSelectedEmail(threads[0].email);
-        }
-    }, [threads, selectedEmail]); */
-
-    // --- ACTIONS ---
 
     const handleDelete = (id: string) => {
         if (!confirm("Bạn có chắc chắn muốn xóa tin nhắn này?")) return;
@@ -103,7 +88,7 @@ export function MessageList({ initialMessages }: { initialMessages: any[] }) {
             if (res.success) {
                 toast.success(res.message);
                 setMessages((prev) => prev.filter((m) => m._id !== id));
-                // Nếu xóa hết tin của người đang chọn, reset selection
+
                 const isCurrentThreadEmpty =
                     messages.filter(
                         (m) => m.email === selectedEmail && m._id !== id
@@ -126,16 +111,14 @@ export function MessageList({ initialMessages }: { initialMessages: any[] }) {
         });
     };
 
-    // Lấy dữ liệu của thread đang chọn
     const activeThread = threads.find((t) => t.email === selectedEmail);
 
     return (
         <div className="flex flex-col h-175 border rounded-lg overflow-hidden bg-background shadow-sm md:flex-row">
-            {/* --- CỘT TRÁI: DANH SÁCH NGƯỜI GỬI --- */}
             <div
                 className={cn(
                     "w-full md:w-87.5 flex flex-col border-r bg-muted/10",
-                    selectedEmail ? "hidden md:flex" : "flex" // Mobile logic: Ẩn danh sách khi đã chọn
+                    selectedEmail ? "hidden md:flex" : "flex"
                 )}
             >
                 {/* Search Header */}

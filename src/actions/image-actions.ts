@@ -1,9 +1,13 @@
 "use server";
 
+import { requireAdmin } from "@/lib/auth-guards"; // 👈 Đảm bảo dòng này ở trên cùng
 import cloudinary from "@/lib/cloudinary";
 
 export async function uploadImageToCloudinary(formData: FormData) {
     try {
+        // Check quyền trước khi xử lý file
+        await requireAdmin();
+
         const file = formData.get("file") as File;
         if (!file) return { error: "Không tìm thấy file" };
 
@@ -39,6 +43,7 @@ export async function uploadImageToCloudinary(formData: FormData) {
 export async function deleteImageFromCloudinary(public_id: string) {
     try {
         await requireAdmin();
+
         if (!public_id) return { error: "Thiếu public_id" };
 
         await cloudinary.uploader.destroy(public_id);
